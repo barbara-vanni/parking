@@ -1,71 +1,37 @@
+#include <iostream>
+#include <SDL2/SDL.h>
 
-// #include <SDL2/SDL.h>
-// #include <stdio.h>
 
-// int main(int argc, char* argv[])
-// {
-//     SDL_Window *window = NULL;
-//     if(0 != SDL_Init(SDL_INIT_VIDEO))
-//     {
-//         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
-//         return -1;
-//     }
-//     window = SDL_CreateWindow("Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-//                               500, 500, SDL_WINDOW_SHOWN);
-//     if(NULL == window)
-//         fprintf(stderr, "Erreur de creation de la fenetre : %s\n", SDL_GetError());
-//     else
-//     {
-//         SDL_Delay(500);
-//         SDL_DestroyWindow(window);
-//     }
-//     SDL_Quit();
-//     return 0;
-// }
+const int SCREEN_WIDTH = 1280;
+const int SCREEN_HEIGHT = 720;
 
-#include "src/include/SDL2/SDL.h"
-#include <stdio.h>
+int main(int argc, char *argv[])
+{
+    SDL_Init(SDL_INIT_EVERYTHING);
 
-#define SCREEN_WIDTH 1280 
-#define SCREEN_HEIGHT 720
+    SDL_Window *window = SDL_CreateWindow("Hello World", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
-int main(int argc, char** argv){
-    if(SDL_Init(SDL_INIT_VIDEO) < 0){
-        printf("Error: SDL failed to initialize\nSDL Error: '%s'\n", SDL_GetError());
+    if (window == NULL)
+    {
+        std::cout << "Error: " << SDL_GetError() << std::endl;
         return 1;
     }
 
-    SDL_Window *window = SDL_CreateWindow("SLD test", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
-    if(!window){
-        printf("Error: Failed to open window\nSDL Error: '%s'\n", SDL_GetError());
-        return 1;
-    }
+    SDL_Event windowEvent;
 
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if(!renderer){
-        printf("Error: Failed to create renderer\nSDL Error: '%s'\n", SDL_GetError());
-        return 1;
-    }
-
-    bool running = true;
-    while(running){
-        SDL_Event event;
-        while(SDL_PollEvent(&event)){
-            switch(event.type){
-                case SDL_QUIT:
-                    running = false;
-                    break;
-
-                default:
-                    break;
+    while (true)
+    {
+        if (SDL_PollEvent(&windowEvent))
+        {
+            if (SDL_QUIT == windowEvent.type)
+            {
+                break;
             }
         }
-
-        SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
-        SDL_RenderClear(renderer);
-
-        SDL_RenderPresent(renderer);
     }
 
-    return 0;
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+
+    return EXIT_SUCCESS;
 }
