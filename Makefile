@@ -48,4 +48,4 @@
 # 	$(BIN_FOLDER)/$(TARGET).exe grille
 
 all:
-	g++ -Isrc/Include -Lsrc/lib -o main main.cpp -lmingw32 -lSDL2main -lSDL2
+	g++ -I src/include -L src/lib -o main main.cpp -lmingw32 -lSDL2main -lSDL2

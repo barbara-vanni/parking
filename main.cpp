@@ -23,7 +23,7 @@
 //     return 0;
 // }
 
-#include "src/include/SDL2/SDL.h"
+#include <SDL2/SDL.h>
 #include <stdio.h>
 
 #define SCREEN_WIDTH 1280 
