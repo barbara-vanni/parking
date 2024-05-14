@@ -1,18 +1,3 @@
-// #ifndef WINDOW_HPP
-// #define WINDOW_HPP
-
-// #include <SDL2/SDL.h>
-
-// class Window {
-// private:
-//     SDL_Window *window;
-// public:
-//     Window(const char* title, int width, int height);
-//     ~Window();
-//     bool isOpen();
-// };
-
-// #endif 
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
