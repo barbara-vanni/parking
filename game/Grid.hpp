@@ -1,4 +1,5 @@
 #include <iostream>
+#include <SDL2/SDL.h>
 using namespace std;
 
 const int NORTH = 0;
@@ -10,15 +11,16 @@ class Grid
 {
 public:
 
-   Grid(int r, int c, int mr, int mc, int d); // build empty grid with r rows, c cols, and mover at row mr, col mc, and facing direction d
-   void Display() const;
+    Grid(int r, int c, int mr, int mc, int d); // build empty grid with r rows, c cols, and mover at row mr, col mc, and facing direction d
+    void Display() const;
+    void DisplayOnScreen(SDL_Window* window, SDL_Renderer* renderer) const;
 
 private:
 
-   char** grid;
-   
-   int mover_r, mover_c, mover_d, maxRow, maxCol;
-   
-   bool path;
+    char** grid;
+    
+    int mover_r, mover_c, mover_d, maxRow, maxCol;
+    
+    bool path;
 
 };

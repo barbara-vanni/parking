@@ -32,7 +32,7 @@ Grid::Grid(int r, int c, int mr, int mc, int d) //make empty grid with r rows, c
    
    for(int i = 0; i < maxRow; i++)
       for(int j = 0; j < maxCol; j++)
-         grid[i][j] = '.';
+         grid[i][j] = '_';
    
    if(mr > maxRow)
       mr = maxRow-1;
@@ -90,6 +90,63 @@ void Grid::Display() const	// display the grid on terminal
    }
 }
 
+
+void Grid::DisplayOnScreen(SDL_Window* window, SDL_Renderer* renderer) const
+{
+
+    if (renderer == nullptr) {
+        std::cerr << "Renderer is null!" << std::endl;
+        return;
+    }
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+
+    SDL_Rect rect;
+    rect.w = 100;
+    rect.h = 100;
+    
+    for(int i = 0; i < maxRow; i++)
+    {
+        for(int j = 0; j < maxCol; j++)
+        {
+            // std::cout << grid[i][j];
+            rect.x = j*110;
+            rect.y = i*110;
+            
+            if(i == mover_r && j == mover_c)
+            {
+                switch(mover_d)
+                {
+                    case NORTH:
+                        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+                        break;
+                    case WEST:
+                        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+                        break;
+                    case SOUTH:
+                        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+                        break;
+                    case EAST:
+                        SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+                        break;
+                }
+            }
+            else if(grid[i][j] == '_')
+            {
+                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+            }
+            else
+            {
+                SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); 
+            }
+
+            SDL_RenderFillRect(renderer, &rect);
+        }
+        // cout << endl;
+    }
+    SDL_RenderPresent(renderer);
+}
 
 
 
