@@ -1,4 +1,5 @@
 #include "game/graphic_game/hpp_files/Window.hpp"
+#include "game/Grid.hpp"
 #include <iostream>                     
 #include <cstdlib>
 #include <iostream>
@@ -6,6 +7,11 @@
 int main(int argc, char *argv[]) {
     // Création de l'objet Window avec les titres des fenêtres
     Window window("Intro", "Menu", "Parking", 1500, 720);
+
+    // Creation of the grid object and display it on terminal
+    Grid grid(6, 6, 3, 0, 3);
+    grid.Display();
+
 
     // Boucle principale
     while (window.isOpen()) {
@@ -27,6 +33,7 @@ int main(int argc, char *argv[]) {
                     break;
             }
         }
+
 
         // Gestion des différents états
         int currentState = window.getCurrentState();
