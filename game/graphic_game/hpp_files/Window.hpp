@@ -19,18 +19,23 @@
 #include <SDL2/SDL.h>
 #include <string>
 
-class Window {
-private:
-    SDL_Window *introWindow;
-    SDL_Window *menuWindow;
-    SDL_Window *parkingWindow;
-    int currentWindowState; // 0: Intro, 1: Menu, 2: Parking
-public:
-    Window(const char* introTitle, const char* menuTitle, const char* parkingTitle, int width, int height);
-    ~Window();
-    bool isOpen();
-    void switchState(int newState);
-    int getCurrentState();
+enum class State {
+    Intro,
+    Menu,
+    Parking
 };
 
-#endif /* WINDOW_HPP */
+class Window {
+private:
+    SDL_Window *window;
+    State currentState;
+public:
+    Window(const char* title, int width, int height);
+    ~Window();
+    bool isOpen();
+    void switchState(State newState);
+    State getCurrentState();
+};
+
+#endif
+
