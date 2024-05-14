@@ -27,9 +27,10 @@ enum class State {
 
 class Window {
 private:
-    SDL_Window *window;
     State currentState;
 public:
+    SDL_Window *window;
+    SDL_Renderer *renderer;
     Window(const char* title, int width, int height);
     ~Window();
     bool isOpen();

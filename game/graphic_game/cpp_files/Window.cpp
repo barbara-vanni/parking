@@ -10,10 +10,17 @@ Window::Window(const char* title, int width, int height) {
         exit(1);
     }
 
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED); // Ajout de cette ligne
+    if (renderer == nullptr) {
+        std::cout << "Erreur lors de la création du renderer : " << SDL_GetError() << std::endl;
+        exit(1);
+    }
+
     currentState = State::Intro; // Définir l'état initial comme "Intro"
 }
 
 Window::~Window() {
+    SDL_DestroyRenderer(renderer); 
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
