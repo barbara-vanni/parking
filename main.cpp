@@ -1,9 +1,15 @@
 #include "game/graphic_game/hpp_files/Window.hpp"
+#include "game/Grid.hpp"
 #include <iostream>
 #include <cstdlib>
 
 int main(int argc, char *argv[]) {
     Window window("Intro", 1500, 720);
+
+    // Creation of the grid object and display it on terminal
+    Grid grid(6, 6, 3, 0, 3);
+    grid.Display();
+
     std::cout << "la fenetre est ouverte" << std::endl;
     while (window.isOpen()) {
         SDL_Event event;
@@ -58,6 +64,7 @@ int main(int argc, char *argv[]) {
                     break;
             }
         }
+
 
     }
     std::cout << "la fenetre est fermée" << std::endl;
