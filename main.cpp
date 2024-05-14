@@ -1,32 +1,126 @@
+// #include "game/graphic_game/hpp_files/Window.hpp"
+// #include <iostream>                     
+// #include <cstdlib>
+// #include <iostream>
+
+// int main(int argc, char *argv[]) {
+//     Window window("Intro", 1500, 720);
+
+//     while (window.isOpen()) {
+//         SDL_Event event;
+//         while (SDL_PollEvent(&event)) {
+//             switch (event.type) {
+//                 case SDL_QUIT:
+//                     window.switchState(State::Parking); // Spécifier l'état Parking lors de la fermeture de la fenêtre
+//                     break;
+//                 case SDL_KEYDOWN:
+//                     if (event.key.keysym.sym == SDLK_RETURN) {
+//                         State currentState = window.getCurrentState();
+//                         State nextState;
+//                         // Déterminer l'état suivant en fonction de l'état actuel
+//                         switch(currentState) {
+//                             case State::Intro:
+//                                 nextState = State::Menu;
+//                                 break;
+//                             case State::Menu:
+//                                 nextState = State::Parking;
+//                                 break;
+//                             case State::Parking:
+//                                 nextState = State::Intro;
+//                                 break;
+//                             default:
+//                                 nextState = State::Intro; // État par défaut
+//                                 break;
+//                         }
+//                         window.switchState(nextState); // Passer à l'état suivant
+//                     }
+//                     break;
+//                 default:
+//                     break;
+//             }
+//         }
+
+//         // Afficher l'état actuel
+//         std::cout << "État actuel : ";
+//         switch(window.getCurrentState()) {
+//             case State::Intro:
+//                 std::cout << "Intro" << std::endl;
+//                 break;
+//             case State::Menu:
+//                 std::cout << "Menu" << std::endl;
+//                 break;
+//             case State::Parking:
+//                 std::cout << "Parking" << std::endl;
+//                 break;
+//             default:
+//                 std::cout << "Inconnu" << std::endl;
+//                 break;
+//         }
+
+//     }
+
+//     return EXIT_SUCCESS;
+// }
 #include "game/graphic_game/hpp_files/Window.hpp"
 #include "game/Grid.hpp"
-#include <iostream>                     
-#include <cstdlib>
 #include <iostream>
+#include <cstdlib>
 
 int main(int argc, char *argv[]) {
-    // Création de l'objet Window avec les titres des fenêtres
-    Window window("Intro", "Menu", "Parking", 1500, 720);
+    Window window("Intro", 1500, 720);
 
     // Creation of the grid object and display it on terminal
     Grid grid(6, 6, 3, 0, 3);
     grid.Display();
 
-
-    // Boucle principale
+    std::cout << "la fenetre est ouverte" << std::endl;
     while (window.isOpen()) {
-        // Gestion des événements
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_QUIT:
-                    window.switchState(-1); // Quitter l'application si la fenêtre est fermée
+                    // Vérifier si la fermeture est due à l'utilisateur ou à un changement d'état
+                    if (window.getCurrentState() != State::Parking) {
+                        State currentState = window.getCurrentState();
+                        State nextState;
+                        // Logique de transition d'état
+                        switch(currentState) {
+                            case State::Intro:
+                                nextState = State::Menu;
+                                break;
+                            case State::Menu:
+                                nextState = State::Parking;
+                                break;
+                            case State::Parking:
+                                nextState = State::Intro;
+                                break;
+                            default:
+                                nextState = State::Intro; // État par défaut
+                                break;
+                        }
+                        window.switchState(nextState); // Changer d'état
+                    }
                     break;
                 case SDL_KEYDOWN:
-                    if (event.key.keysym.sym == SDLK_RETURN) { // Si la touche Entrée est enfoncée
-                        int currentState = window.getCurrentState();
-                        int nextState = (currentState + 1) % 3; // Passer à l'état suivant (Intro -> Menu -> Parking -> Intro)
-                        window.switchState(nextState);
+                    if (event.key.keysym.sym == SDLK_RETURN) {
+                        State currentState = window.getCurrentState();
+                        State nextState;
+                        // Logique de transition d'état
+                        switch(currentState) {
+                            case State::Intro:
+                                nextState = State::Menu;
+                                break;
+                            case State::Menu:
+                                nextState = State::Parking;
+                                break;
+                            case State::Parking:
+                                nextState = State::Intro;
+                                break;
+                            default:
+                                nextState = State::Intro; // État par défaut
+                                break;
+                        }
+                        window.switchState(nextState); // Changer d'état
                     }
                     break;
                 default:
@@ -35,31 +129,8 @@ int main(int argc, char *argv[]) {
         }
 
 
-        // Gestion des différents états
-        int currentState = window.getCurrentState();
-
-        // Affichage de l'état actuel pour débogage
-        std::cout << "État actuel : ";
-        switch(currentState) {
-            case 0:
-                std::cout << "Intro" << std::endl;
-                break;
-            case 1:
-                std::cout << "Menu" << std::endl;
-                break;
-            case 2:
-                std::cout << "Parking" << std::endl;
-                break;
-            default:
-                std::cout << "Inconnu" << std::endl;
-                break;
-        }
-
-        // Mettre à jour les états en fonction des événements ou de la logique du jeu
     }
+    std::cout << "la fenetre est fermée" << std::endl;
 
     return EXIT_SUCCESS;
 }
-
-
-
