@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 
+
 int main(int argc, char *argv[]) {
     Window window("Intro", 1500, 720);
 
@@ -54,15 +55,23 @@ int main(int argc, char *argv[]) {
                                 nextState = State::Intro;
                                 break;
                             default:
-                                nextState = State::Intro; // État par défaut
+                                nextState = State::Intro; 
                                 break;
                         }
-                        window.switchState(nextState); // Changer d'état
+                        window.switchState(nextState);
                     }
                     break;
                 default:
                     break;
             }
+            if (window.getCurrentState() == State::Intro) {
+                window.drawText("Bienvenue dans le jeu !", 100, 100, 30);
+            } else if (window.getCurrentState() == State::Menu) {
+                window.drawText("Menu", 100, 100, 30);
+            } else if (window.getCurrentState() == State::Parking) {
+                window.drawText("Parking", 100, 100, 30);
+            }
+        
         }
 
 
