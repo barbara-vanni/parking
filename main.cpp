@@ -1,3 +1,4 @@
+
 #include "game/graphic_game/hpp_files/Window.hpp"
 #include "game/Grid.hpp"
 #include <iostream>
@@ -52,6 +53,7 @@ int main(int argc, char *argv[]) {
                                 break;
                             case State::Parking:
                                 nextState = State::Intro;
+                                
                                 break;
                             default:
                                 nextState = State::Intro; // État par défaut
@@ -65,6 +67,10 @@ int main(int argc, char *argv[]) {
             }
         }
 
+        if (window.getCurrentState() == State::Parking) {
+            // std::cout << "Displaying grid..." << std::endl;
+            grid.DisplayOnScreen(window.window, window.renderer);
+        }
 
     }
     std::cout << "la fenetre est fermée" << std::endl;
