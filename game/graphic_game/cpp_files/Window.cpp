@@ -36,6 +36,16 @@ bool Window::isOpen() {
     return true;
 }
 
+bool Window::close() {
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            return false;
+        }
+    }
+    return true;
+}
+
 void Window::switchState(State newState) {
     // Modification de la fenêtre en fonction du nouvel état
     switch(newState) {

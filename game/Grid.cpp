@@ -180,6 +180,7 @@ bool Grid::FrontIsClear() const	// check to see if space in front of mover is cl
             return false;
          break;
    }
+   return false;
 }
 
 
@@ -291,9 +292,9 @@ bool Grid::Move(int s)	// move forward s spaces, if possible
                else  return true;
             }
          }
-         return false;
          break;
    }
+    return false;
 } 
 
 

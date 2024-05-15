@@ -1,3 +1,6 @@
+#ifndef GRID_HPP
+#define GRID_HPP
+
 #include <iostream>
 #include <SDL2/SDL.h>
 using namespace std;
@@ -26,3 +29,5 @@ private:
     bool path;
 
 };
+
+#endif // GRID_HPP
