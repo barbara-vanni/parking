@@ -32,6 +32,23 @@ bool Window::isOpen() {
         if (event.type == SDL_QUIT) {
             return false;
         }
+        if (event.type == SDL_KEYDOWN) {
+            if (event.key.keysym.sym == SDLK_RETURN) {
+                State newState;
+                switch(currentState) {
+                    case State::Intro:
+                        newState = State::Menu;
+                        break;
+                    case State::Menu:
+                        newState = State::Parking;
+                        break;
+                    default:
+                        newState = State::Intro; // Default state
+                        break;
+                }
+                switchState(newState);
+            }
+        }
     }
     return true;
 }

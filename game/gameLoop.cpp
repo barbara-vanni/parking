@@ -17,31 +17,12 @@ void mainLoop(Window& window, Grid& grid) {
 
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
+
                 case SDL_QUIT:
                     window.close();
                     break;
+
                 case SDL_KEYDOWN:
-                    cout << "Key pressed: " << event.key.keysym.sym << endl;
-                    if (event.key.keysym.sym == SDLK_RETURN) {
-                        // Only switch state if we're not in the Parking state
-                        if (window.getCurrentState() != State::Parking) {
-                            State currentState = window.getCurrentState();
-                            State nextState;
-                            // State transition logic
-                            switch(currentState) {
-                                case State::Intro:
-                                    nextState = State::Menu;
-                                    break;
-                                case State::Menu:
-                                    nextState = State::Parking;
-                                    break;
-                                default:
-                                    nextState = State::Intro; // Default state
-                                    break;
-                            }
-                            window.switchState(nextState); // Switch state
-                        }
-                    }
                     if (window.getCurrentState() == State::Parking) {
                         if (event.key.keysym.sym == SDLK_RIGHT) {
                             cout << "right" << endl;
