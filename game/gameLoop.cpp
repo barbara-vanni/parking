@@ -1,6 +1,5 @@
 #include "gameLoop.hpp"
 #include "logic_game/hpp_files/Car.hpp"
-#include<iostream>
 #include <SDL2/SDL.h>
 
 void mainLoop(Window& window, Grid& grid, Car& car) {
@@ -25,30 +24,16 @@ void mainLoop(Window& window, Grid& grid, Car& car) {
                     window.close();
                     break;
 
-                // case SDL_KEYDOWN:
-                //     if (window.getCurrentState() == State::Parking) {
-                //         if (event.key.keysym.sym == SDLK_RIGHT) {
-                //             cout << "right" << endl;
-                //             // grid.Move(1);
-                //             gridChanged = true;
-                //         } else if (event.key.keysym.sym == SDLK_LEFT) {
-                //             cout << "left" << endl;
-                //             // grid.Move(-1);
-                //             gridChanged = true;
                 case SDL_KEYDOWN:
-                        if (window.getCurrentState() == State::Parking) {
-                            if (event.key.keysym.sym == SDLK_UP) {
-                                car.moveUp();    
-                                gridChanged = true;
-                            } else if (event.key.keysym.sym == SDLK_DOWN) {
-                                car.moveDown(); 
-                                gridChanged = true;
-                            } else if (event.key.keysym.sym == SDLK_LEFT) {
-                                car.moveLeft();  
-                                gridChanged = true;
-                            } else if (event.key.keysym.sym == SDLK_RIGHT) {
-                                car.moveRight(); 
-                                gridChanged = true;
+                    if (window.getCurrentState() == State::Parking) {
+                        if (event.key.keysym.sym == SDLK_RIGHT) {
+                            cout << "right" << endl;
+                            // grid.Move(1);
+                            gridChanged = true;
+                        } else if (event.key.keysym.sym == SDLK_LEFT) {
+                            cout << "left" << endl;
+                            // grid.Move(-1);
+                            gridChanged = true;
                         }
                     }
                     break;
