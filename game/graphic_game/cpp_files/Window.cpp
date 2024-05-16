@@ -38,11 +38,14 @@ bool Window::isOpen() {
                 switch(currentState) {
                     case State::Intro:
                         newState = State::Menu;
+                        SDL_RenderClear(this->renderer);
                         break;
                     case State::Menu:
                         newState = State::Parking;
+                        SDL_RenderClear(this->renderer);
                         break;
                     default:
+                        SDL_RenderClear(this->renderer);
                         newState = State::Intro; // Default state
                         break;
                 }

@@ -1,4 +1,5 @@
 #include "gameLoop.hpp"
+#include <SDL2/SDL.h>
 
 void mainLoop(Window& window, Grid& grid) {
     std::cout << "Game loop started!" << std::endl;
@@ -39,26 +40,27 @@ void mainLoop(Window& window, Grid& grid) {
                     break;
             }
         }
+        
 
         // Render game state outside of the SDL_PollEvent loop
         if (window.getCurrentState() == State::Intro) {
-            SDL_RenderClear(window.renderer);
             window.drawText("Bienvenue dans le jeu !", 100, 100, 30);
             const char* error = SDL_GetError();
             if (*error) {
                 std::cout << "SDL Error: " << error << std::endl;
                 SDL_ClearError();
             }
+            SDL_RenderClear(window.renderer);
             SDL_RenderPresent(window.renderer);
         } 
 
         if (window.getCurrentState() == State::Parking && gridChanged) {
-            SDL_RenderClear(window.renderer);
             grid.DisplayOnScreen(window.window, window.renderer);
             SDL_RenderPresent(window.renderer);
             gridChanged = false;
         }
 
+        SDL_RenderClear(window.renderer);
         frameTime = SDL_GetTicks() - frameStart;
 
         if (frameDelay > frameTime) {
