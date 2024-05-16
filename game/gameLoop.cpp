@@ -25,8 +25,6 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, Car& car
 
         int x, y;
         SDL_GetMouseState(&x, &y);
-        // cout << "Mouse is at position (" << x << ", " << y << ")" << endl;
-        // cout<< "Entering event loop"<<endl;
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
 
@@ -48,25 +46,49 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, Car& car
                         }
                     }
                     break;
-
                 case SDL_KEYDOWN:
-                    cout << "Event type: " << event.type << endl;
-                    if (event.key.keysym.sym == SDLK_RETURN) {
-                        State newState;
-                        switch(window.getCurrentState()) {
-                            case State::Intro:
-                                newState = State::Menu;
+                    if (window.getCurrentState() == State::Parking) {
+                        // Déplacement de la voiture lorsque les touches directionnelles sont enfoncées
+                        switch (event.key.keysym.sym) {
+                            case SDLK_UP:
+                                car.moveUp();
+                                gridChanged = true;
                                 break;
-                            case State::Menu:
-                                newState = State::Parking;
+                            case SDLK_DOWN:
+                                car.moveDown();
+                                gridChanged = true;
+                                break;
+                            case SDLK_LEFT:
+                                car.moveLeft();
+                                gridChanged = true;
+                                break;
+                            case SDLK_RIGHT:
+                                car.moveRight();
+                                gridChanged = true;
                                 break;
                             default:
-                                newState = State::Intro;
                                 break;
                         }
-                        window.switchState(newState);
+                    } else {
+                        // Changement d'état si la touche "Return" est enfoncée
+                        if (event.key.keysym.sym == SDLK_RETURN) {
+                            State newState;
+                            switch(window.getCurrentState()) {
+                                case State::Intro:
+                                    newState = State::Menu;
+                                    break;
+                                case State::Menu:
+                                    newState = State::Parking;
+                                    break;
+                                default:
+                                    newState = State::Intro;
+                                    break;
+                            }
+                            window.switchState(newState);
+                            stateChanged = true; // Indique que l'état a changé
+                        }
                     }
-
+                    break;
                 default:
                     break;
             }   

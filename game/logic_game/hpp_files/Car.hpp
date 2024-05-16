@@ -12,6 +12,7 @@ public:
     void moveDown();
     void moveLeft();
     void moveRight();
+
 };
 
 #endif

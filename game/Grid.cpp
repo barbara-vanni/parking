@@ -97,8 +97,15 @@ void Grid::DisplayOnScreen(SDL_Window* window, SDL_Renderer* renderer) const
    }
    if (car != nullptr) {
       SDL_Rect carRect;
-      carRect.w = car->getWidth() * 105; // Ajuster la taille en fonction de la taille de la voiture et de la grille
-      carRect.h = car->getHeight() * 100;
+      if (car->isHorizontalOrientation()) {
+         // Si horizontalOrientation est true
+         carRect.w = car->getWidth() * 105;
+         carRect.h = car->getHeight() * 100;
+      } else {
+         // Si horizontalOrientation est false
+         carRect.w = car->getWidth() * 100;
+         carRect.h = car->getHeight() * 105;
+      }
       carRect.x = car->getPosX() * 110; // Ajuster les coordonnées en fonction de la position de la voiture et de la grille
       carRect.y = car->getPosY() * 110;
 
@@ -112,149 +119,5 @@ void Grid::setCar(const Car& car){
    this->car = &car;
 }
 
-// bool Grid::FrontIsClear() const	// check to see if space in front of mover is clear
-// {
-//    switch(mover_d)
-//    {
-//       case NORTH:
-//          if(grid[mover_r-1][mover_c] != '#')
-//             return true;
-//          else
-//             return false;
-//          break;
-//       case WEST:
-//          if(grid[mover_r][mover_c-1] != '#')
-//             return true;
-//          else
-//             return false;
-//          break;
-//       case EAST:
-//          if(grid[mover_r][mover_c+1] != '#')
-//             return true;
-//          else
-//             return false;
-//          break;
-//       case SOUTH:
-//          if(grid[mover_r+1][mover_c] != '#')
-//             return true;
-//          else
-//             return false;
-//          break;
-//    }
-//    return false;
-// }
 
-
-// bool Grid::Move(int s)	// move forward s spaces, if possible
-// {
-//    int temp;
-//    bool flag = false;
-   
-//    switch(mover_d) {
-      
-//       case NORTH:
-//          if(s > 0) {
-            
-//             if(mover_r - s >= 0) {
-               
-//                temp = mover_r;
-               
-//                for(int i = 0; i < s; i++)
-//                {
-//                   if( FrontIsClear())
-//                   {
-//                      flag = true;
-//                      if(grid[mover_r][mover_c] != '0')
-//                         grid[mover_r][mover_c] = ' ';
-//                      mover_r--;
-                     
-//                   } else    flag = false;
-//                }
-               
-//                if(flag == false)  mover_r = temp;
-               
-//                else return true;
-//             }
-//          }
-//          return false;
-//          break;
-//       case SOUTH:
-//         if(s > 0) {
-           
-//             if(mover_r + s <= maxRow)
-//             {
-//                temp = mover_r;
-//                for(int i = 0; i < s; i++)
-//                {
-//                   if( FrontIsClear())  {
-                     
-//                      flag = true;
-//                      if(grid[mover_r][mover_c] != '0')
-//                         grid[mover_r][mover_c] = ' ';
-//                      mover_r++; 
-                     
-//                   } else flag = false;
-//                }
-               
-//                if(flag == false) mover_r = temp;
-               
-//                else  return true;
-//             }
-//          }
-//          return false;
-//          break;
-//       case EAST:
-//       if(s > 0)
-//          {
-//             if(mover_c + s <= maxCol)
-//             {
-//                temp = mover_c;
-//                for(int i = 0; i < s; i++)
-//                {
-//                   if( FrontIsClear())
-//                   {
-//                      flag = true;
-//                      if(grid[mover_r][mover_c] != '0')
-//                         grid[mover_r][mover_c] = ' ';
-//                      mover_c++;
-                     
-//                   } else flag = false;
-//                }
-               
-//                if(flag == false)
-//                   mover_c = temp;
-                  
-//                else  return true;
-//             }
-//          }
-//          return false;
-//          break;
-//       case WEST:
-//       if(s > 0)
-//          {
-//             if(mover_c - s >= 0) {
-               
-//                temp = mover_c;
-//               for(int i = 0; i < s; i++)
-//               {
-//                   if( FrontIsClear())
-//                   {
-//                      flag = true;
-//                      if(grid[mover_r][mover_c] != '0')
-//                         grid[mover_r][mover_c] = ' ';
-//                      mover_c--; 
-                     
-//                   } else flag = false;
-//                }
-               
-//                if(flag == false)
-//                   mover_c = temp;
-                  
-//                else  return true;
-//             }
-//          }
-//          break;
-//    }
-//     return false;
-// } 
 
