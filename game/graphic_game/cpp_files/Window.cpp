@@ -2,6 +2,9 @@
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
 
+
+
+
 Window::Window(const char* title, int width, int height) {
     SDL_Init(SDL_INIT_EVERYTHING);
 
@@ -11,13 +14,13 @@ Window::Window(const char* title, int width, int height) {
         exit(1);
     }
 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED); // Ajout de cette ligne
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (renderer == nullptr) {
         std::cout << "Erreur lors de la création du renderer : " << SDL_GetError() << std::endl;
         exit(1);
     }
 
-    currentState = State::Intro; // Définir l'état initial comme "Intro"
+    currentState = State::Intro; 
 }
 
 Window::~Window() {
@@ -26,48 +29,36 @@ Window::~Window() {
     SDL_Quit();
 }
 
-bool Window::isOpen() {
-    SDL_Event event;
-    while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT) {
-            return false;
-        }
-        if (event.type == SDL_KEYDOWN) {
-            if (event.key.keysym.sym == SDLK_RETURN) {
-                State newState;
-                switch(currentState) {
-                    case State::Intro:
-                        newState = State::Menu;
-                        SDL_RenderClear(this->renderer);
-                        break;
-                    case State::Menu:
-                        newState = State::Parking;
-                        SDL_RenderClear(this->renderer);
-                        break;
-                    default:
-                        SDL_RenderClear(this->renderer);
-                        newState = State::Intro; // Default state
-                        break;
-                }
-                switchState(newState);
-            }
-        }
-    }
-    return true;
-}
+// bool Window::isOpen() {
+//     SDL_Event event;
+//     while (SDL_PollEvent(&event)) {
+//         if (event.type == SDL_QUIT) {
+//             return false;
+//         }
+//         if (event.type == SDL_KEYDOWN) {
+//             if (event.key.keysym.sym == SDLK_RETURN) {
+//                 State newState;
+//                 switch(currentState) {
+//                     case State::Intro:
+//                         newState = State::Menu;
+//                         break;
+//                     case State::Menu:
+//                         newState = State::Parking;
+//                         break;
+//                     default:
+//                         newState = State::Intro;
+//                         break;
+//                 }
+//                 switchState(newState);
+//             }
+//         }
+//     }
+//     return true;
+// }
 
-bool Window::close() {
-    SDL_Event event;
-    while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT) {
-            return false;
-        }
-    }
-    return true;
-}
+
 
 void Window::switchState(State newState) {
-    // Modification de la fenêtre en fonction du nouvel état
     switch(newState) {
         case State::Intro:
             SDL_SetWindowTitle(window, "Intro");
@@ -91,17 +82,16 @@ State Window::getCurrentState() {
 }
 
 void Window::drawText(const std::string &text, int x, int y, int size){
-    // Chargez la police par défaut fournie avec SDL_ttf
-    TTF_Font* font = TTF_OpenFont("font/Oswald.ttf", 24); // Taille de police 24, vous pouvez ajuster selon vos besoins
+
+    TTF_Font* font = TTF_OpenFont("font/Oswald.ttf", 24);
 
     if (font == nullptr) {
         std::cerr << "Erreur lors du chargement de la police : " << TTF_GetError() << std::endl;
         return;
     }
 
-    SDL_Color textColor = {255, 255, 255}; // Couleur du texte (blanc ici)
+    SDL_Color textColor = {255, 255, 255}; 
 
-    // Créez une surface de texte rendue à partir de la police et du texte
     SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), textColor);
 
     if (textSurface == nullptr) {
@@ -110,7 +100,7 @@ void Window::drawText(const std::string &text, int x, int y, int size){
         return;
     }
 
-    // Créez une texture SDL à partir de la surface de texte
+
     SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 
     if (textTexture == nullptr) {
@@ -120,20 +110,18 @@ void Window::drawText(const std::string &text, int x, int y, int size){
         return;
     }
 
-    // Déterminez les dimensions de la surface de texte
     int textWidth = textSurface->w;
     int textHeight = textSurface->h;
 
-    // Libérez la surface de texte car vous n'en avez plus besoin
     SDL_FreeSurface(textSurface);
     TTF_CloseFont(font);
 
-    // Définissez la position et les dimensions de la zone où le texte sera rendu
+
     SDL_Rect dstRect = {x, y, textWidth, textHeight};
-
-    // Rendez la texture de texte à l'emplacement spécifié
     SDL_RenderCopy(renderer, textTexture, nullptr, &dstRect);
-
-    // Libérez la texture de texte après utilisation
     SDL_DestroyTexture(textTexture);
+
 }
+
+
+

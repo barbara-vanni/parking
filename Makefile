@@ -51,4 +51,4 @@
 
 
 all:
-	g++ -I src/include -L src/lib -o main main.cpp game/graphic_game/cpp_files/Window.cpp game/logic_game/cpp_files/Car.cpp game/logic_game/cpp_files/GameObject.cpp game/graphic_game/cpp_files/graphicInit.cpp game/Grid.cpp game/gameLoop.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf 
+	g++ -I src/include -L src/lib -o main main.cpp game/graphic_game/cpp_files/Window.cpp game/logic_game/cpp_files/Car.cpp game/logic_game/cpp_files/GameObject.cpp game/graphic_game/cpp_files/graphicInit.cpp game/Grid.cpp game/gameLoop.cpp game/graphic_game/cpp_files/Button.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf 
