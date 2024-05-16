@@ -21,6 +21,9 @@ int main(int argc, char *argv[]) {
     std::cout << "la fenetre est fermée" << std::endl;
 
     closeGraphic();
+
+    window.~Window();
+
     return EXIT_SUCCESS;
 }
 
