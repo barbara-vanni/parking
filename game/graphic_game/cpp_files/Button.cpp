@@ -5,7 +5,7 @@
 using namespace std;
 
 
-Button::Button(SDL_Renderer *renderer, int x, int y, int w, int h, const std::string &text, int size) {
+Button::Button(SDL_Renderer *renderer, int x, int y, int w, int h, const std::string &text, int size) : clicked(false){
     this->renderer = renderer;
     rect.x = x;
     rect.y = y;
@@ -13,6 +13,7 @@ Button::Button(SDL_Renderer *renderer, int x, int y, int w, int h, const std::st
     rect.h = h;
     this->text = text;
     this->size = size;
+    bool clicked;
 
     TTF_Font *font = TTF_OpenFont("font/Oswald.ttf", size);
     if (font == nullptr) {
@@ -42,13 +43,31 @@ Button::~Button() {
 
 void Button::draw() {
     SDL_RenderCopy(renderer, texture, nullptr, &rect);
+    if (clicked) {
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // Green color
+    } else {
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color
+    }
+    // SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // White color
+
+    SDL_RenderDrawRect(renderer, &rect);
 }
 
-bool Button::isClicked(int x, int y) {
+void Button::click() {
+    this->clicked = true;
+}
+
+bool Button::isClickedAtPosition(int x, int y) {
     // Debug output to check coordinates
     cout << "Button rect: x=" << rect.x << ", y=" << rect.y << ", w=" << rect.w << ", h=" << rect.h << endl;
     cout << "Mouse click: x=" << x << ", y=" << y << endl;
 
-    // Check if the click is within the button's rectangle
     return x >= rect.x && x <= rect.x + rect.w && y >= rect.y && y <= rect.y + rect.h;
+}
+
+void Button::highlight() {
+
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); 
+
+    SDL_RenderDrawRect(renderer, &rect);
 }

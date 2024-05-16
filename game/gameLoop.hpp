@@ -7,8 +7,9 @@
 #include "logic_game/hpp_files/Car.hpp"
 #include "Grid.hpp"
 
-// Prototype de la fonction gameLoop
+
 void mainLoop(Window& window, Grid& grid, std::vector<Button*>& buttons, Car& car);
 void introPage(Window& window, std::vector<Button*>& buttons);
+void menuPage(Window& window, std::vector<Button*>& buttons);
 
 #endif 

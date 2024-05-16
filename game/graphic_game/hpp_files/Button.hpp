@@ -5,6 +5,7 @@
 #include <string>
 
 class Button {
+    bool clicked;
 private:
     SDL_Rect rect;
     SDL_Texture *texture;
@@ -16,7 +17,10 @@ public:
     Button(SDL_Renderer *renderer, int x, int y, int w, int h, const std::string &text, int size);
     ~Button();
     void draw();
-    bool isClicked(int x, int y);
+    void click();
+    bool isClicked() const { return clicked; }
+    bool isClickedAtPosition(int x, int y);
+    void highlight();
 };
 
 #endif

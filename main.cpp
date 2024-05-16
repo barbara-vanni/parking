@@ -25,11 +25,16 @@ int main(int argc, char *argv[]) {
 
     std::vector<Button*> buttons;
     Button* buttonBegin = new Button(window.renderer, 100, 200, 200, 50, "Start", 30);
-    Button* buttonExit = new Button(window.renderer, 200, 300, 200, 50, "Exit", 30);
-    Button* buttonPlay = new Button(window.renderer, 300, 200, 200, 50, "Play", 30);
+    Button* buttonPlay = new Button(window.renderer, 600, 600, 200, 50, "Play", 30);
+    Button* buttonLevel1 = new Button(window.renderer, 250, 200, 100, 80, "1", 30);
+    Button* buttonLevel2 = new Button(window.renderer, 650, 200, 100, 80, "2", 30);
+    Button* buttonLevel3 = new Button(window.renderer, 1050, 200, 100, 80, "3", 30);
+
     buttons.push_back(buttonBegin);
     buttons.push_back(buttonPlay);
-    buttons.push_back(buttonExit);
+    buttons.push_back(buttonLevel1);
+    buttons.push_back(buttonLevel2);
+    buttons.push_back(buttonLevel3);
 
     mainLoop(window, grid, buttons, car);
 
