@@ -23,9 +23,13 @@ int main(int argc, char *argv[]) {
 
     std::cout << "la fenetre est ouverte" << std::endl;
 
-    std::vector<Button> buttons;
-    Button buttonBegin(window.renderer, 100, 200, 200, 50, "Jouer", 30);
+    std::vector<Button*> buttons;
+    Button* buttonBegin = new Button(window.renderer, 100, 200, 200, 50, "Start", 30);
+    Button* buttonExit = new Button(window.renderer, 200, 300, 200, 50, "Exit", 30);
+    Button* buttonPlay = new Button(window.renderer, 300, 200, 200, 50, "Play", 30);
     buttons.push_back(buttonBegin);
+    buttons.push_back(buttonPlay);
+    buttons.push_back(buttonExit);
 
     mainLoop(window, grid, buttons, car);
 
@@ -33,6 +37,9 @@ int main(int argc, char *argv[]) {
     grid.~Grid();
     window.~Window();
     car.~Car();
+    for (Button* button : buttons){
+        button->~Button();
+    }
     closeGraphic();
     window.~Window();
 

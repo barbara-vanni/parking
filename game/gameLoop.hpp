@@ -8,7 +8,7 @@
 #include "Grid.hpp"
 
 // Prototype de la fonction gameLoop
-void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, Car& car);
-void introPage(Window& window, std::vector<Button>& buttons);
+void mainLoop(Window& window, Grid& grid, std::vector<Button*>& buttons, Car& car);
+void introPage(Window& window, std::vector<Button*>& buttons);
 
 #endif 

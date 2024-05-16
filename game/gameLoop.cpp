@@ -6,7 +6,7 @@
 #include <vector>
 
 
-void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, Car& car) {
+void mainLoop(Window& window, Grid& grid, std::vector<Button*>& buttons, Car& car) {
     std::cout << "Game loop started!" << std::endl;
 
     bool gridChanged = true; // Variable to check if the grid has changed
@@ -39,8 +39,8 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, Car& car
                     cout << "Event type: " << event.type << endl;
                     if (window.getCurrentState() == State::Intro) {
                         if (event.button.button == SDL_BUTTON_LEFT) {
-                            for (Button& buttonBegin : buttons) {
-                                if (buttonBegin.isClicked(event.button.x, event.button.y)) {
+                            for (Button* buttonBegin : buttons) {
+                                if (buttons[0]->isClicked(event.button.x, event.button.y)) {
                                     cout << "Button clicked!" << endl;
                                     window.switchState(State::Menu);
                                 }
@@ -120,14 +120,15 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, Car& car
 }
 
 
-void introPage(Window& window, std::vector<Button>& buttons){
+void introPage(Window& window, std::vector<Button*>& buttons){
     SDL_SetRenderDrawColor(window.renderer, 0, 0, 0, 255);
     SDL_RenderClear(window.renderer);
     window.drawText("Bienvenue dans le jeu !", 100, 100, 30);
 
-    for (Button& button : buttons) {
-        button.draw();
+    for (Button* buttonBegin : buttons) {
+        buttons[0]->draw();
     }
+
     SDL_RenderPresent(window.renderer);
 
 }
