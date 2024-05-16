@@ -18,8 +18,8 @@ int main(int argc, char *argv[]) {
 
     Grid grid(6, 6, 3, 5);
 
-    Car car(2, 2, 2, 1, true);
-    // Car car(4, 4, 1, 2, false);
+    // Car car(2, 2, 2, 1, true);
+    Car car(4, 4, 1, 2, false);
 
     std::cout << "la fenetre est ouverte" << std::endl;
 
