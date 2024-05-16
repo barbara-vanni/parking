@@ -11,7 +11,7 @@ public:
     bool isHorizontalOrientation() const;
     void setPosX(int posX) { this->posX = posX; };
     void setPosY(int posY) { this->posY = posY; };
-    // ~GameObject() {};
+    ~GameObject();
 
 private:
     int posX;

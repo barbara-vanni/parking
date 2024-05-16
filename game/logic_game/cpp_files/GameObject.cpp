@@ -4,7 +4,7 @@
 GameObject::GameObject(int posX, int posY, int width, int height, bool horizontalOrientation) 
     : posX(posX), posY(posY), width(width), height(height), horizontalOrientation(horizontalOrientation) {}
 
-// GameObject::~GameObject() {}
+GameObject::~GameObject() {}
 
 int GameObject::getPosX() const { return posX; }
 int GameObject::getPosY() const { return posY; }

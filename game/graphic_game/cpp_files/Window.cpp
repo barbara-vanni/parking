@@ -32,6 +32,36 @@ bool Window::isOpen() {
         if (event.type == SDL_QUIT) {
             return false;
         }
+        if (event.type == SDL_KEYDOWN) {
+            if (event.key.keysym.sym == SDLK_RETURN) {
+                State newState;
+                switch(currentState) {
+                    case State::Intro:
+                        newState = State::Menu;
+                        SDL_RenderClear(this->renderer);
+                        break;
+                    case State::Menu:
+                        newState = State::Parking;
+                        SDL_RenderClear(this->renderer);
+                        break;
+                    default:
+                        SDL_RenderClear(this->renderer);
+                        newState = State::Intro; // Default state
+                        break;
+                }
+                switchState(newState);
+            }
+        }
+    }
+    return true;
+}
+
+bool Window::close() {
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            return false;
+        }
     }
     return true;
 }

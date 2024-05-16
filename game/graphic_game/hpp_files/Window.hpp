@@ -34,6 +34,7 @@ public:
     Window(const char* title, int width, int height);
     ~Window();
     bool isOpen();
+    bool close();
     void switchState(State newState);
     State getCurrentState();
     void drawText(const std::string &text, int x, int y, int size);
