@@ -2,6 +2,9 @@
 #include "game/Grid.hpp"
 #include "game/gameLoop.hpp" 
 #include "game/graphic_game/hpp_files/graphicInit.hpp"
+#include "game/graphic_game/hpp_files/Button.hpp"
+#include <iostream>
+#include <vector>
 
 int main(int argc, char *argv[]) {
     
@@ -16,13 +19,17 @@ int main(int argc, char *argv[]) {
 
     std::cout << "la fenetre est ouverte" << std::endl;
 
-    mainLoop(window, grid);
+    std::vector<Button> buttons;
+    Button buttonBegin(window.renderer, 100, 200, 200, 50, "Jouer", 30);
+    buttons.push_back(buttonBegin);
+
+    mainLoop(window, grid, buttons);
 
     std::cout << "la fenetre est fermée" << std::endl;
 
     closeGraphic();
-
     window.~Window();
+
 
     return EXIT_SUCCESS;
 }

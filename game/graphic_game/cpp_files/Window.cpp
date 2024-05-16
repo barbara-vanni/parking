@@ -29,42 +29,34 @@ Window::~Window() {
     SDL_Quit();
 }
 
-bool Window::isOpen() {
-    SDL_Event event;
-    while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT) {
-            return false;
-        }
-        if (event.type == SDL_KEYDOWN) {
-            if (event.key.keysym.sym == SDLK_RETURN) {
-                State newState;
-                switch(currentState) {
-                    case State::Intro:
-                        newState = State::Menu;
-                        break;
-                    case State::Menu:
-                        newState = State::Parking;
-                        break;
-                    default:
-                        newState = State::Intro;
-                        break;
-                }
-                switchState(newState);
-            }
-        }
-    }
-    return true;
-}
+// bool Window::isOpen() {
+//     SDL_Event event;
+//     while (SDL_PollEvent(&event)) {
+//         if (event.type == SDL_QUIT) {
+//             return false;
+//         }
+//         if (event.type == SDL_KEYDOWN) {
+//             if (event.key.keysym.sym == SDLK_RETURN) {
+//                 State newState;
+//                 switch(currentState) {
+//                     case State::Intro:
+//                         newState = State::Menu;
+//                         break;
+//                     case State::Menu:
+//                         newState = State::Parking;
+//                         break;
+//                     default:
+//                         newState = State::Intro;
+//                         break;
+//                 }
+//                 switchState(newState);
+//             }
+//         }
+//     }
+//     return true;
+// }
 
-bool Window::close() {
-    SDL_Event event;
-    while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT) {
-            return false;
-        }
-    }
-    return true;
-}
+
 
 void Window::switchState(State newState) {
     switch(newState) {
