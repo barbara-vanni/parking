@@ -1,68 +1,103 @@
 #include "gameLoop.hpp"
 #include "logic_game/hpp_files/Car.hpp"
+#include<iostream>
+#include "graphic_game/hpp_files/Button.hpp"
 #include <SDL2/SDL.h>
+#include <vector>
 
-void mainLoop(Window& window, Grid& grid, Car& car) {
+
+void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, Car& car) {
     std::cout << "Game loop started!" << std::endl;
 
     bool gridChanged = true; // Variable to check if the grid has changed
+    bool stateChanged = true; // Variable to check if the state has changed 
 
     const int FPS = 60;
     const int frameDelay = 1000 / FPS;
 
     Uint32 frameStart;
     int frameTime;
+    SDL_Event event;
+    bool gameisrunning = true;   
 
-    while (window.isOpen()) {
+    while (gameisrunning) {
         frameStart = SDL_GetTicks();
-        SDL_Event event;
 
+        int x, y;
+        SDL_GetMouseState(&x, &y);
+        // cout << "Mouse is at position (" << x << ", " << y << ")" << endl;
+        // cout<< "Entering event loop"<<endl;
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
 
                 case SDL_QUIT:
-                    window.close();
+                    cout << "Event type: " << event.type << endl;
+                    gameisrunning = false;
                     break;
-
-                case SDL_KEYDOWN:
-                    if (window.getCurrentState() == State::Parking) {
-                        if (event.key.keysym.sym == SDLK_RIGHT) {
-                            cout << "right" << endl;
-                            // grid.Move(1);
-                            gridChanged = true;
-                        } else if (event.key.keysym.sym == SDLK_LEFT) {
-                            cout << "left" << endl;
-                            // grid.Move(-1);
-                            gridChanged = true;
+                
+                case SDL_MOUSEBUTTONDOWN:
+                    cout << "Event type: " << event.type << endl;
+                    if (window.getCurrentState() == State::Intro) {
+                        if (event.button.button == SDL_BUTTON_LEFT) {
+                            for (Button& buttonBegin : buttons) {
+                                if (buttonBegin.isClicked(event.button.x, event.button.y)) {
+                                    cout << "Button clicked!" << endl;
+                                    window.switchState(State::Menu);
+                                }
+                            }
                         }
                     }
                     break;
+
+                case SDL_KEYDOWN:
+                    cout << "Event type: " << event.type << endl;
+                    if (event.key.keysym.sym == SDLK_RETURN) {
+                        State newState;
+                        switch(window.getCurrentState()) {
+                            case State::Intro:
+                                newState = State::Menu;
+                                break;
+                            case State::Menu:
+                                newState = State::Parking;
+                                break;
+                            default:
+                                newState = State::Intro;
+                                break;
+                        }
+                        window.switchState(newState);
+                    }
+
                 default:
                     break;
-            }
+            }   
+        }
+    
+        // Render game state outside of the SDL_PollEvent loop
+        switch (window.getCurrentState()) {
+            case State::Intro:
+                introPage(window, buttons);
+                break;
+            case State::Menu:
+                SDL_SetRenderDrawColor(window.renderer, 0, 0, 0, 255);
+                SDL_RenderClear(window.renderer);
+                window.drawText("Menu", 100, 100, 30);
+                SDL_RenderPresent(window.renderer);
+                break;
+            case State::Parking:
+                if (stateChanged) {
+                    SDL_RenderClear(window.renderer); 
+                    grid.setCar(car);
+            grid.DisplayOnScreen(window.window, window.renderer); 
+                    // stateChanged = false;
+                }
+                break;
+            default:
+                std::cerr << "État invalide !" << std::endl;
+                break;
         }
         
+        SDL_RenderPresent(window.renderer);
 
-        // Render game state outside of the SDL_PollEvent loop
-        if (window.getCurrentState() == State::Intro) {
-            window.drawText("Bienvenue dans le jeu !", 100, 100, 30);
-            const char* error = SDL_GetError();
-            if (*error) {
-                std::cout << "SDL Error: " << error << std::endl;
-                SDL_ClearError();
-            }
-            SDL_RenderClear(window.renderer);
-            SDL_RenderPresent(window.renderer);
-        } 
-
-        if (window.getCurrentState() == State::Parking && gridChanged) {
-            grid.setCar(car);
-            grid.DisplayOnScreen(window.window, window.renderer);
-            SDL_RenderPresent(window.renderer);
-            gridChanged = false;
-        }
-
-        SDL_RenderClear(window.renderer);
         frameTime = SDL_GetTicks() - frameStart;
 
         if (frameDelay > frameTime) {
@@ -72,4 +107,17 @@ void mainLoop(Window& window, Grid& grid, Car& car) {
 
     std::cout << "la fenetre est fermée" << std::endl;
     std::cout << "Game loop ended!" << std::endl;
+}
+
+
+void introPage(Window& window, std::vector<Button>& buttons){
+    SDL_SetRenderDrawColor(window.renderer, 0, 0, 0, 255);
+    SDL_RenderClear(window.renderer);
+    window.drawText("Bienvenue dans le jeu !", 100, 100, 30);
+
+    for (Button& button : buttons) {
+        button.draw();
+    }
+    SDL_RenderPresent(window.renderer);
+
 }
