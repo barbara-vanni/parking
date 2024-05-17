@@ -21,11 +21,13 @@ int main(int argc, char *argv[]) {
     StockCar stockCar;
     // Car car(2, 2, 2, 1, true);
     Car car1(4, 4, 1, 2, false);
-    Car car2(2, 2, 2, 1, true);
-    Car car3(1, 1, 3, 1, false);
+    Car car2(2, 2, 3, 1, true);
+    Car car3(1, 1, 1, 3, false);
+    Car car4(2, 5, 2, 1, true);
     stockCar.addCar(car1);
     stockCar.addCar(car2);
     stockCar.addCar(car3);
+    stockCar.addCar(car4);
 
     std::cout<< "nombre de voiture dans stockCar : " << stockCar.getStockCar().size() << std::endl;
 
@@ -41,8 +43,8 @@ int main(int argc, char *argv[]) {
     grid.~Grid();
     window.~Window();
     stockCar.~StockCar();
-    closeGraphic();
     window.~Window();
+    closeGraphic();
 
 
     return EXIT_SUCCESS;

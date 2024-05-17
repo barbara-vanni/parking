@@ -10,9 +10,8 @@
 void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, StockCar& stockCar) {
     std::cout << "Game loop started!" << std::endl;
 
-    bool gridChanged = true; // Variable to check if the grid has changed
-    bool stateChanged = true; // Variable to check if the state has changed 
-
+    bool gridChanged = true;
+    bool stateChanged = true; 
     const int FPS = 60;
     const int frameDelay = 1000 / FPS;
 
@@ -107,14 +106,9 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, StockCar
                 SDL_RenderPresent(window.renderer);
                 break;
             case State::Parking:
-            //     if (stateChanged) {
-            //         SDL_RenderClear(window.renderer); 
-            //         grid.setCar(car);
-            // grid.DisplayOnScreen(window.window, window.renderer); 
-            //         // stateChanged = false;
                 if (stateChanged) {
                     SDL_RenderClear(window.renderer); 
-                    grid.setStockCar(stockCar.getStockCar());// Utiliser la collection de véhicules de StockCar
+                    grid.setStockCar(stockCar.getStockCar());
                     grid.DisplayOnScreen(window.window, window.renderer); 
                 }
                 break;

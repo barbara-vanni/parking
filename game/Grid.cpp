@@ -77,19 +77,16 @@ void Grid::DisplayOnScreen(SDL_Window* window, SDL_Renderer* renderer) const
 
          if(grid[i][j] == '_')
          {
-               // Dessiner une case vide
                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
                SDL_RenderFillRect(renderer, &rect);
          }
          else if(grid[i][j] == ' ')
          {
-               // Dessiner la sortie
                SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
                SDL_RenderFillRect(renderer, &rect);
          }
          else
          {
-               // Dessiner un mur
                SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); 
                SDL_RenderFillRect(renderer, &rect);
          }
@@ -106,10 +103,36 @@ void Grid::DisplayOnScreen(SDL_Window* window, SDL_Renderer* renderer) const
          carRect.w = car->getWidth() * 100;
          carRect.h = car->getHeight() * 105;
       }
-      carRect.x = car->getPosX() * 110; // Ajuster les coordonnées en fonction de la position de la voiture et de la grille
+      carRect.x = car->getPosX() * 110;
       carRect.y = car->getPosY() * 110;
 
-      SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Dessiner la voiture en bleu par exemple
+      SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); 
+      SDL_RenderFillRect(renderer, &carRect);
+   }
+      for (const Car& otherCar : stockCar) {
+      SDL_Rect carRect;
+      if (otherCar.isHorizontalOrientation() && otherCar.getWidth() == 3) {
+         carRect.w = otherCar.getWidth() * 107;
+         carRect.h = otherCar.getHeight() * 100;
+      } else if (!otherCar.isHorizontalOrientation() && otherCar.getHeight() == 3) {
+         carRect.w = otherCar.getWidth() * 100;
+         carRect.h = otherCar.getHeight() * 107;
+      }
+      else if (otherCar.isHorizontalOrientation() && otherCar.getWidth() == 2){
+         carRect.w = otherCar.getWidth() * 105;
+         carRect.h = otherCar.getHeight() * 100;
+      } else if (!otherCar.isHorizontalOrientation() && otherCar.getHeight() == 2){
+         carRect.w = otherCar.getWidth() * 100;
+         carRect.h = otherCar.getHeight() * 105;
+      }
+      else {
+         carRect.w = otherCar.getWidth() * 100;
+         carRect.h = otherCar.getHeight() * 105;
+      }
+      carRect.x = otherCar.getPosX() * 110;
+      carRect.y = otherCar.getPosY() * 110;
+
+      SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); 
       SDL_RenderFillRect(renderer, &carRect);
    }
    SDL_RenderPresent(renderer);
