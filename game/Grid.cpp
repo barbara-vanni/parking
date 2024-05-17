@@ -118,3 +118,9 @@ void Grid::DisplayOnScreen(SDL_Window* window, SDL_Renderer* renderer) const
 void Grid::setCar(const Car& car){
    this->car = &car;
 }
+
+void Grid::setStockCar(const std::vector<Car>& stockCar) {
+    this->stockCar = stockCar;
+}
+
+

@@ -1,12 +1,13 @@
 #include "gameLoop.hpp"
 #include "logic_game/hpp_files/Car.hpp"
+#include "logic_game/hpp_files/StockCar.hpp"
 #include<iostream>
 #include "graphic_game/hpp_files/Button.hpp"
 #include <SDL2/SDL.h>
 #include <vector>
 
 
-void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, Car& car) {
+void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, StockCar& stockCar) {
     std::cout << "Game loop started!" << std::endl;
 
     bool gridChanged = true; // Variable to check if the grid has changed
@@ -50,24 +51,24 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, Car& car
                     if (window.getCurrentState() == State::Parking) {
                         // Déplacement de la voiture lorsque les touches directionnelles sont enfoncées
                         switch (event.key.keysym.sym) {
-                            case SDLK_UP:
-                                car.moveUp();
-                                gridChanged = true;
-                                break;
-                            case SDLK_DOWN:
-                                car.moveDown();
-                                gridChanged = true;
-                                break;
-                            case SDLK_LEFT:
-                                car.moveLeft();
-                                gridChanged = true;
-                                break;
-                            case SDLK_RIGHT:
-                                car.moveRight();
-                                gridChanged = true;
-                                break;
-                            default:
-                                break;
+                         case SDLK_UP:
+                            stockCar.moveCar(0, -1); // Déplacer le premier véhicule vers le haut
+                            gridChanged = true;
+                            break;
+                        case SDLK_DOWN:
+                            stockCar.moveCar(0, 1); // Déplacer le premier véhicule vers le bas
+                            gridChanged = true;
+                            break;
+                        case SDLK_LEFT:
+                            stockCar.moveCar(0, -1); // Déplacer le premier véhicule vers la gauche
+                            gridChanged = true;
+                            break;
+                        case SDLK_RIGHT:
+                            stockCar.moveCar(0, 1); // Déplacer le premier véhicule vers la droite
+                            gridChanged = true;
+                            break;
+                        default:
+                            break;
                         }
                     } else {
                         // Changement d'état si la touche "Return" est enfoncée
@@ -106,11 +107,15 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, Car& car
                 SDL_RenderPresent(window.renderer);
                 break;
             case State::Parking:
+            //     if (stateChanged) {
+            //         SDL_RenderClear(window.renderer); 
+            //         grid.setCar(car);
+            // grid.DisplayOnScreen(window.window, window.renderer); 
+            //         // stateChanged = false;
                 if (stateChanged) {
                     SDL_RenderClear(window.renderer); 
-                    grid.setCar(car);
-            grid.DisplayOnScreen(window.window, window.renderer); 
-                    // stateChanged = false;
+                    grid.setStockCar(stockCar.getStockCar());// Utiliser la collection de véhicules de StockCar
+                    grid.DisplayOnScreen(window.window, window.renderer); 
                 }
                 break;
             default:

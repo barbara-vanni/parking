@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "logic_game/hpp_files/Car.hpp"
+#include "logic_game/hpp_files/StockCar.hpp"
 #include <SDL2/SDL.h>
 using namespace std;
 
@@ -17,6 +18,7 @@ public:
    Grid(int r, int c, int exitRow, int exitCol); // build grid with r rows, c cols,  blocks around edge with random exit
    void setCar(const Car& car);
    void DisplayOnScreen(SDL_Window* window, SDL_Renderer* renderer) const;
+   void setStockCar(const std::vector<Car>& stockCar);
    // bool Move(int s); // move forward s steps
    // bool FrontIsClear() const;
    ~Grid();
@@ -28,6 +30,7 @@ private:
    int exitRow, exitCol;
    bool path;
    const Car* car;
+   std::vector<Car> stockCar;
 
 };
 
