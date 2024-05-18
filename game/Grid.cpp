@@ -42,6 +42,8 @@ Grid::Grid(int r, int c, int exitRow, int exitCol)
     }
 
     path = true;
+    grid [exitRow][exitCol] = ' ';
+    selectedCar = nullptr;
 
     // Place la sortie aux coordonnées spécifiées
     grid[exitRow][exitCol] = ' ';
@@ -94,6 +96,11 @@ void Grid::DisplayOnScreen(SDL_Window* window, SDL_Renderer* renderer) const
    }
    if (car != nullptr) {
       SDL_Rect carRect;
+      if (car == selectedCar){
+         SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+      } else {
+         SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+      }
       if (car->isHorizontalOrientation()) {
          // Si horizontalOrientation est true
          carRect.w = car->getWidth() * 105;
@@ -146,4 +153,7 @@ void Grid::setStockCar(const std::vector<Car>& stockCar) {
     this->stockCar = stockCar;
 }
 
+void Grid::setSelectedCar(const Car* car){
+   selectedCar = car;
+}
 

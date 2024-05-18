@@ -9,7 +9,6 @@
 #include <vector>
 
 int main(int argc, char *argv[]) {
-    
     if (!initGraphic()) {
         std::cout << "Failed to initialize graphics. Exiting." << std::endl;
         return 1;
@@ -37,7 +36,8 @@ int main(int argc, char *argv[]) {
     Button buttonBegin(window.renderer, 100, 200, 200, 50, "Jouer", 30);
     buttons.push_back(buttonBegin);
 
-    mainLoop(window, grid, buttons, stockCar);
+    int selectedCarIndex = -1;
+    mainLoop(window, grid, buttons, stockCar, selectedCarIndex);
 
     std::cout << "la fenetre est fermée" << std::endl;
     grid.~Grid();

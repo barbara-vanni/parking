@@ -19,8 +19,9 @@ public:
    void setCar(const Car& car);
    void DisplayOnScreen(SDL_Window* window, SDL_Renderer* renderer) const;
    void setStockCar(const std::vector<Car>& stockCar);
-   // bool Move(int s); // move forward s steps
-   // bool FrontIsClear() const;
+   void setSelectedCar(const Car* car);
+   int getWidth() const { return maxCol; };
+   int getHeight() const { return maxRow; };
    ~Grid();
 
 private:
@@ -30,6 +31,7 @@ private:
    int exitRow, exitCol;
    bool path;
    const Car* car;
+   const Car* selectedCar;
    std::vector<Car> stockCar;
 
 };
