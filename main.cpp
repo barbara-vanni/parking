@@ -6,6 +6,7 @@
 #include "game/graphic_game/hpp_files/Button.hpp"
 #include <iostream>
 #include <vector>
+#include <vld.h>
 
 int main(int argc, char *argv[]) {
     
@@ -15,6 +16,7 @@ int main(int argc, char *argv[]) {
     }
 
     Window window("Intro", 1500, 720);
+    // int* leak = new int[100]; 
 
     Grid grid(6, 6, 3, 5);
 
@@ -37,6 +39,13 @@ int main(int argc, char *argv[]) {
     buttons.push_back(buttonLevel3);
 
     mainLoop(window, grid, buttons, car);
+
+    if(VLDReportLeaks() == 0)
+        std::cout << "No Memory Leaks" << std::endl;
+    else
+        std::cout << "Memory Leaks" << std::endl;
+
+
 
     std::cout << "la fenetre est fermée" << std::endl;
     grid.~Grid();
