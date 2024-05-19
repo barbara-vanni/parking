@@ -21,10 +21,10 @@ int main(int argc, char *argv[]) {
     Grid grid(gridRows, gridCols, 3, 5);
     StockCar stockCar;
 
-    Car carPlayer(0, 3, 2, 1, true, gridRows, gridCols);
-    Car car2(3, 2, 1, 2, false, gridRows, gridCols);
-    Car car3(2, 1, 1, 3, false, gridRows, gridCols);
-    Car car4(2, 4, 2, 1, true, gridRows, gridCols);
+    Car carPlayer(0, 3, 2, 1, true, gridRows, gridCols, true);
+    Car car2(4, 2, 1, 2, false, gridRows, gridCols);
+    Car car3(3, 1, 1, 3, false, gridRows, gridCols);
+    Car car4(3, 4, 2, 1, true, gridRows, gridCols);
 
     stockCar.addCar(carPlayer);
     stockCar.addCar(car2);

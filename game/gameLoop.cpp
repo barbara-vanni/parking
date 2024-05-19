@@ -93,9 +93,10 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, StockCar
                         std::cout << "Car position: (" << selectedCar.getPosX() << ", " << selectedCar.getPosY() << ")" << std::endl;
                         std::cout << "Exit position: (" << grid.getExitRow() << ", " << grid.getExitCol() << ")" << std::endl;
 
-                        if (selectedCar.getPosX() == grid.getExitCol() - 1 && selectedCar.getPosY() == grid.getExitRow()) {
+                        if (selectedCar.getIsPlayer() && selectedCar.getPosX() == grid.getExitCol() - 1 && selectedCar.getPosY() == grid.getExitRow()) {
                             victory = true;
                         }
+
 
                         gridChanged = true;
                     } else {
