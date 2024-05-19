@@ -10,30 +10,38 @@ void Car::move(int distance) {
 }
 
 void Car::moveUp() {
-    int newPosY = getPosY() - 1;
-    if (withinLimits(getPosX(), newPosY)) {
-        setPosY(newPosY);
+    if (!isHorizontalOrientation()) {
+        int newPosY = getPosY() - 1;
+        if (withinLimits(getPosX(), newPosY)) {
+            setPosY(newPosY);
+        }
     }
 }
 
 void Car::moveDown() {
-    int newPosY = getPosY() + 1;
-    if (withinLimits(getPosX(), newPosY)) {
-        setPosY(newPosY);
+    if (!isHorizontalOrientation()) {
+        int newPosY = getPosY() + 1;
+        if (withinLimits(getPosX(), newPosY)) {
+            setPosY(newPosY);
+        }
     }
 }
 
 void Car::moveLeft() {
-    int newPosX = getPosX() - 1;
-    if (withinLimits(newPosX, getPosY())) {
-        setPosX(newPosX);
+    if (isHorizontalOrientation()) {
+        int newPosX = getPosX() - 1;
+        if (withinLimits(newPosX, getPosY())) {
+            setPosX(newPosX);
+        }
     }
 }
 
 void Car::moveRight() {
-    int newPosX = getPosX() + 1;
-    if (withinLimits(newPosX, getPosY())) {
-        setPosX(newPosX);
+    if (isHorizontalOrientation()) {
+        int newPosX = getPosX() + 1;
+        if (withinLimits(newPosX, getPosY())) {
+            setPosX(newPosX);
+        }
     }
 }
 
@@ -44,11 +52,14 @@ void Car::resetPosition() {
 }
 
 bool Car::withinLimits(int newPosX, int newPosY) const {
-    // Vérifie si les nouvelles positions sont dans les limites de la grille
-    if (newPosX < 0 || newPosX >= maxCol -1|| newPosY < 0 || newPosY >= maxRow) {
-        return false;
+    if (isHorizontalOrientation()) {
+        // Vérifie si la voiture horizontale dépasse les limites
+        return newPosX >= 0 && (newPosX + getWidth() - 1) < maxCol && newPosY >= 0 && newPosY < maxRow;
+    } else {
+        // Vérifie si la voiture verticale dépasse les limites
+        return newPosX >= 0 && newPosX < maxCol && newPosY >= 0 && (newPosY + getHeight() - 1) < maxRow;
     }
-    return true;
 }
+
 
 
