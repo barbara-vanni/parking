@@ -11,6 +11,7 @@ public:
     std::vector<Car>& getStockCar() { 
         return cars; 
         }
+    void resetCars();
     ~StockCar();
 private:
     std::vector<Car> cars;

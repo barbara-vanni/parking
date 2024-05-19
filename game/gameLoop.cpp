@@ -175,9 +175,8 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, StockCar
             SDL_Delay(3000); // Affiche le message pendant 3 secondes
 
             // Réinitialiser les positions des voitures
-            for (Car& car : stockCar.getStockCar()) {
-                car.resetPosition();
-            }
+            std::cout << "Resetting car positions..." << std::endl; // Ajout du message de débogage
+            stockCar.resetCars(); // Appel de la méthode de réinitialisation des voitures
 
             window.switchState(State::Menu); // Revenir au menu
             victory = false; // Réinitialiser l'état de victoire

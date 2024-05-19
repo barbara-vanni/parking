@@ -1,59 +1,54 @@
+#include <iostream>
 #include "../hpp_files/GameObject.hpp"
 #include "../../Grid.hpp"
 #include "../hpp_files/Car.hpp"
 
-Car::Car(int posX, int posY, int width, int height, bool horizontalOrientation) 
-    : GameObject(posX, posY, width, height, horizontalOrientation) {}
-
 Car::~Car() {}
 
 void Car::move(int distance) {
-    if (isHorizontalOrientation()) {
-        int newPosX = getPosX() + distance;
-        if (newPosX >= 0 && newPosX + getWidth() <= 6) {
-            setPosX(newPosX);
-        }
-    } else {
-        int newPosY = getPosY() + distance;
-        if (newPosY >= 0 && newPosY + getHeight() <= 6) {
-            setPosY(newPosY);
-        }
-    }
+    // Implémentation du mouvement général
 }
 
 void Car::moveUp() {
-    if (!isHorizontalOrientation()) {
-        int newPosY = getPosY() - 1;
-        if (newPosY >= 0) {
-            setPosY(newPosY);
-        }
+    int newPosY = getPosY() - 1;
+    if (withinLimits(getPosX(), newPosY)) {
+        setPosY(newPosY);
     }
 }
 
 void Car::moveDown() {
-    if (!isHorizontalOrientation()) {
-        int newPosY = getPosY() + 1;
-        if (newPosY + getHeight() <= 6) {
-            setPosY(newPosY);
-        }
+    int newPosY = getPosY() + 1;
+    if (withinLimits(getPosX(), newPosY)) {
+        setPosY(newPosY);
     }
 }
 
 void Car::moveLeft() {
-    if (isHorizontalOrientation()) {
-        int newPosX = getPosX() - 1;
-        if (newPosX >= 0) {
-            setPosX(newPosX);
-        }
+    int newPosX = getPosX() - 1;
+    if (withinLimits(newPosX, getPosY())) {
+        setPosX(newPosX);
     }
 }
 
 void Car::moveRight() {
-    if (isHorizontalOrientation()) {
-        int newPosX = getPosX() + 1;
-        if (newPosX + getWidth() <= 6) {
-            setPosX(newPosX);
-        }
+    int newPosX = getPosX() + 1;
+    if (withinLimits(newPosX, getPosY())) {
+        setPosX(newPosX);
     }
 }
+
+void Car::resetPosition() {
+    setPosX(initialPosX);
+    setPosY(initialPosY);
+    std::cout << "Car reset to initial position: (" << initialPosX << ", " << initialPosY << ")" << std::endl; // Debug message
+}
+
+bool Car::withinLimits(int newPosX, int newPosY) const {
+    // Vérifie si les nouvelles positions sont dans les limites de la grille
+    if (newPosX < 0 || newPosX >= maxCol -1|| newPosY < 0 || newPosY >= maxRow) {
+        return false;
+    }
+    return true;
+}
+
 
