@@ -19,11 +19,11 @@ int main(int argc, char *argv[]) {
     Grid grid(6, 6, 3, 5);
     StockCar stockCar;
     // Car car(2, 2, 2, 1, true);
-    Car car1(4, 4, 1, 2, false);
-    Car car2(2, 2, 3, 1, true);
-    Car car3(1, 1, 1, 3, false);
-    Car car4(2, 5, 2, 1, true);
-    stockCar.addCar(car1);
+    Car carPlayer(0, 3, 2, 1, true);
+    Car car2(3, 2, 1, 2, false);
+    Car car3(2, 1, 1, 3, false);
+    Car car4(2, 4, 2, 1, true);
+    stockCar.addCar(carPlayer);
     stockCar.addCar(car2);
     stockCar.addCar(car3);
     stockCar.addCar(car4);

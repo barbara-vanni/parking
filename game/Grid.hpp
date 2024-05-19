@@ -22,6 +22,8 @@ public:
    void setSelectedCar(const Car* car);
    int getWidth() const { return maxCol; };
    int getHeight() const { return maxRow; };
+   int getExitRow() const { return exitRow; };
+   int getExitCol() const { return exitCol; };
    ~Grid();
 
 private:

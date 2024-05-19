@@ -6,20 +6,14 @@
 #include "Grid.hpp" 
 #include <SDL2/SDL.h>
 
-Grid::Grid(int r, int c, int exitRow, int exitCol)
-{
-    if(r < 4 || c < 4)
-    {
+Grid::Grid(int r, int c, int exitRow, int exitCol) : exitRow(exitRow), exitCol(exitCol) {
+    if(r < 4 || c < 4) {
         maxRow = 3;
         maxCol = 3;
-    }
-    else if(r > 40 || c > 40)
-    {
+    } else if(r > 40 || c > 40) {
         maxRow = 40;
         maxCol = 40;
-    }
-    else
-    {
+    } else {
         maxRow = r;
         maxCol = c;
     }
@@ -28,10 +22,8 @@ Grid::Grid(int r, int c, int exitRow, int exitCol)
         grid[i] = new char [maxCol];
 
     // Remplit la grille avec '#' et '.'
-    for(int i = 0; i <  maxRow; i++)
-    {
-        for(int j = 0; j < maxCol; j++)
-        {
+    for(int i = 0; i < maxRow; i++) {
+        for(int j = 0; j < maxCol; j++) {
             if(i == 0 || i == maxRow-1)
                 grid[i][j] = '#';
             else if(j == 0 || j == maxCol-1)

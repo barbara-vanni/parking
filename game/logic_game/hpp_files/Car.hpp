@@ -12,7 +12,16 @@ public:
     void moveDown();
     void moveLeft();
     void moveRight();
+    void resetPosition() {
+        posX = initialPosX;
+        posY = initialPosY;
+    }
 
+private:
+    int posX, posY;
+    int width, height;
+    bool horizontalOrientation;
+    int initialPosX, initialPosY;
 };
 
 #endif
