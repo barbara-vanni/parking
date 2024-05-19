@@ -155,7 +155,7 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, StockCar
                     gridChanged = false;
                 }
                 if (victory) {
-                    window.drawText("Victoire!", 1100, 50, 30); // Affiche le message à droite de la fenêtre
+                    window.drawText("Victoire!", 900, 50, 100); 
                 }
                 break;
             default:
@@ -171,17 +171,15 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, StockCar
             SDL_Delay(frameDelay - frameTime);
         }
 
-        // Si la victoire est atteinte, affichez le message et revenez au menu après un délai
         if (victory) {
-            SDL_Delay(3000); // Affiche le message pendant 3 secondes
+            SDL_Delay(3000); 
 
-            // Réinitialiser les positions des voitures
-            std::cout << "Resetting car positions..." << std::endl; // Ajout du message de débogage
-            stockCar.resetCars(); // Appel de la méthode de réinitialisation des voitures
+            std::cout << "Resetting car positions..." << std::endl; 
+            stockCar.resetCars(); 
 
-            window.switchState(State::Menu); // Revenir au menu
-            victory = false; // Réinitialiser l'état de victoire
-            stateChanged = true; // Forcer la mise à jour de l'état
+            window.switchState(State::Menu); 
+            victory = false; 
+            stateChanged = true; 
         }
     }
 
