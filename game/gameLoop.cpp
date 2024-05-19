@@ -119,14 +119,6 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, StockCar
                         }
                     }
                     break;
-
-                // case SDL_KEYUP:
-                //     std::cout << "Key event (up): " << event.key.keysym.sym << std::endl;
-                //     break;
-
-                // default:
-                //     std::cout << "Unhandled event type: " << event.type << std::endl;
-                //     break;
             }
         }
 

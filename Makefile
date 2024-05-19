@@ -5,7 +5,7 @@
 CXX := g++
 CXXFLAGS := -I src/include
 LDFLAGS := -L src/lib
-LIBS := -lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf
+LIBS := -lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image
 
 # Directories
 SRC_DIR := game
