@@ -14,7 +14,7 @@ Button::Button(SDL_Renderer *renderer, int x, int y, int w, int h, const std::st
     this->text = text;
     this->size = size;
 
-    TTF_Font *font = TTF_OpenFont("assets/font/Oswald.ttf", size);
+    TTF_Font *font = TTF_OpenFont("assets/font/ChangaOne-Italic.ttf", size);
     if (font == nullptr) {
         std::cout << "Erreur lors de l'ouverture de la police : " << TTF_GetError() << std::endl;
         exit(1);

@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
     std::cout << "la fenetre est ouverte" << std::endl;
 
     std::vector<Button> buttons;
-    Button buttonBegin(window.renderer, 100, 200, 200, 50, "Jouer", 30);
+    Button buttonBegin(window.renderer, 650, 600, 200, 50, "Jouer", 30);
     buttons.push_back(buttonBegin);
 
     int selectedCarIndex = -1;

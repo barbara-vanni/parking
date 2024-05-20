@@ -21,10 +21,10 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, StockCar
     bool gameisrunning = true;
     bool victory = false;
 
-    std::vector<SDL_Texture*> gifFrames = window.loadGifFrames("assets/images", 60);  // 10 frames par exemple
+    std::vector<SDL_Texture*> gifFrames = window.loadGifFrames("assets/images", 52);  // 10 frames par exemple
     int currentFrame = 0;
     Uint32 lastGifFrameTime = 0;
-    const Uint32 gifFrameDelay = 100;  // Délai de 100 ms entre chaque frame
+    const Uint32 gifFrameDelay = 60;  // Délai de 100 ms entre chaque frame
 
     while (gameisrunning) {
         frameStart = SDL_GetTicks();
@@ -201,7 +201,9 @@ void introPage(Window& window, std::vector<Button>& buttons, std::vector<SDL_Tex
     }
 
     // Dessiner le texte par-dessus l'image
-    window.drawText("Bienvenue dans le jeu !", 100, 100, 30);
+    window.drawText("PARK", 880, 50, 100);
+    window.drawText("AND", 970, 150, 100);
+    window.drawText("FURIOUS", 1050, 250, 100);
 
     for (Button& button : buttons) {
         button.draw();
