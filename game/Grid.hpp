@@ -5,6 +5,7 @@
 #include "logic_game/hpp_files/Car.hpp"
 #include "logic_game/hpp_files/StockCar.hpp"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 using namespace std;
 
 const int NORTH = 0;
@@ -26,6 +27,9 @@ public:
    int getExitCol() const { return exitCol; };
    ~Grid();
 
+   void loadCarTextures(SDL_Renderer* renderer);
+   void renderCars(SDL_Renderer* renderer) const;
+
 private:
 
    char** grid;
@@ -35,6 +39,12 @@ private:
    const Car* car;
    const Car* selectedCar;
    std::vector<Car> stockCar;
+
+   SDL_Texture* carPlayerTexture;
+   SDL_Texture* verticalCarTexture;
+   SDL_Texture* horizontalCarTexture;
+   SDL_Texture* busTexture;
+   SDL_Texture* horizontalBusTexture;
 
 };
 

@@ -5,6 +5,7 @@
 #include <ctime>
 #include "Grid.hpp" 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 Grid::Grid(int r, int c, int exitRow, int exitCol) : exitRow(exitRow), exitCol(exitCol) {
     if(r < 4 || c < 4) {
@@ -42,93 +43,87 @@ Grid::~Grid()
     for(int i = 0; i < maxRow; i++)
         delete [] grid[i];
     delete [] grid;
+    if (carPlayerTexture) SDL_DestroyTexture(carPlayerTexture);
+    if (verticalCarTexture) SDL_DestroyTexture(verticalCarTexture);
+    if (horizontalCarTexture) SDL_DestroyTexture(horizontalCarTexture);
+    if (busTexture) SDL_DestroyTexture(busTexture);
+    if (horizontalBusTexture) SDL_DestroyTexture(horizontalBusTexture);
 }
 
-void Grid::DisplayOnScreen(SDL_Window* window, SDL_Renderer* renderer) const
-{
-   if (renderer == nullptr) {
-      std::cerr << "Renderer is null!" << std::endl;
-      return;
-   }
-   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-   SDL_RenderClear(renderer);
+void Grid::loadCarTextures(SDL_Renderer* renderer) {
+   carPlayerTexture = IMG_LoadTexture(renderer, "assets/images/car_player.png");
+   verticalCarTexture = IMG_LoadTexture(renderer, "assets/images/cars.png");
+   horizontalCarTexture = IMG_LoadTexture(renderer, "assets/images/horizontal_cars.png");
+   busTexture = IMG_LoadTexture(renderer, "assets/images/bus.png");
+   horizontalBusTexture = IMG_LoadTexture(renderer, "assets/images/horizontal_bus.png");
 
-   SDL_Rect rect;
-   rect.w = 100;
-   rect.h = 100;
-   
-   for(int i = 0; i < maxRow; i++)
-   {
-      for(int j = 0; j < maxCol; j++)
-      {
-         rect.x = j * 110;
-         rect.y = i * 110;
-         if(grid[i][j] == '_')
-         {
-               SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-               SDL_RenderFillRect(renderer, &rect);
-         }
-         else if(grid[i][j] == ' ')
-         {
-               SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-               SDL_RenderFillRect(renderer, &rect);
-         }
-         else
-         {
-               SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); 
-               SDL_RenderFillRect(renderer, &rect);
-         }
-      }
+   if (!carPlayerTexture || !verticalCarTexture || !horizontalCarTexture || !busTexture || !horizontalBusTexture) {
+      std::cerr << "Erreur lors du chargement des textures des voitures : " << IMG_GetError() << std::endl;
    }
-   if (car != nullptr) {
-      SDL_Rect carRect;
-      if (car == selectedCar){
-         SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
-      } else {
-         SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-      }
-      if (car->isHorizontalOrientation()) {
-         // Si horizontalOrientation est true
-         carRect.w = car->getWidth() * 105;
-         carRect.h = car->getHeight() * 100;
-      } else {
-         // Si horizontalOrientation est false
-         carRect.w = car->getWidth() * 100;
-         carRect.h = car->getHeight() * 105;
-      }
-      carRect.x = car->getPosX() * 110;
-      carRect.y = car->getPosY() * 110;
+}
 
-      SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); 
-      SDL_RenderFillRect(renderer, &carRect);
-   }
-      for (const Car& otherCar : stockCar) {
-      SDL_Rect carRect;
-      if (otherCar.isHorizontalOrientation() && otherCar.getWidth() == 3) {
-         carRect.w = otherCar.getWidth() * 107;
-         carRect.h = otherCar.getHeight() * 100;
-      } else if (!otherCar.isHorizontalOrientation() && otherCar.getHeight() == 3) {
-         carRect.w = otherCar.getWidth() * 100;
-         carRect.h = otherCar.getHeight() * 107;
-      }
-      else if (otherCar.isHorizontalOrientation() && otherCar.getWidth() == 2){
-         carRect.w = otherCar.getWidth() * 105;
-         carRect.h = otherCar.getHeight() * 100;
-      } else if (!otherCar.isHorizontalOrientation() && otherCar.getHeight() == 2){
-         carRect.w = otherCar.getWidth() * 100;
-         carRect.h = otherCar.getHeight() * 105;
-      }
-      else {
-         carRect.w = otherCar.getWidth() * 100;
-         carRect.h = otherCar.getHeight() * 105;
-      }
-      carRect.x = otherCar.getPosX() * 110;
-      carRect.y = otherCar.getPosY() * 110;
+void Grid::renderCars(SDL_Renderer* renderer) const {
+    for (const Car& car : stockCar) {
+        SDL_Texture* carTexture = nullptr;
 
-      SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); 
-      SDL_RenderFillRect(renderer, &carRect);
-   }
-   SDL_RenderPresent(renderer);
+        
+      if (car.getName() == "carPlayer"){
+         carTexture = carPlayerTexture;  
+      }if ((car.getWidth() == 3 || car.getHeight() == 3) && car.isHorizontalOrientation()) {
+         carTexture = horizontalBusTexture;  
+      } if ((car.getWidth() == 3 || car.getHeight() == 3) && !car.isHorizontalOrientation()) {
+         carTexture = busTexture; 
+      } if (car.getWidth() == 2 && car.getName() == ""){
+         carTexture = horizontalCarTexture;  
+      } if ((car.getWidth() == 1 && car.getHeight() == 2) && !car.isHorizontalOrientation()) {
+         carTexture = verticalCarTexture;  
+      }
+
+
+        if (carTexture) {
+            SDL_Rect carRect;
+            carRect.x = car.getPosX() * 110;
+            carRect.y = car.getPosY() * 110;
+            carRect.w = car.getWidth() * 110;
+            carRect.h = car.getHeight() * 110;
+
+            SDL_RenderCopy(renderer, carTexture, NULL, &carRect);
+        }
+    }
+}
+
+void Grid::DisplayOnScreen(SDL_Window* window, SDL_Renderer* renderer) const {
+    if (renderer == nullptr) {
+        std::cerr << "Renderer is null!" << std::endl;
+        return;
+    }
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+
+    SDL_Rect rect;
+    rect.w = 100;
+    rect.h = 100;
+
+    for (int i = 0; i < maxRow; i++) {
+        for (int j = 0; j < maxCol; j++) {
+            rect.x = j * 110;
+            rect.y = i * 110;
+            if (grid[i][j] == '_') {
+                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+                SDL_RenderFillRect(renderer, &rect);
+            } else if (grid[i][j] == ' ') {
+                SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+                SDL_RenderFillRect(renderer, &rect);
+            } else {
+                SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+                SDL_RenderFillRect(renderer, &rect);
+            }
+        }
+    }
+
+    renderCars(renderer);
+
+    SDL_RenderPresent(renderer);
 }
 
 void Grid::setCar(const Car& car){

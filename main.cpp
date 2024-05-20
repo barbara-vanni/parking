@@ -21,17 +21,20 @@ int main(int argc, char *argv[]) {
     int gridRows = 6;
     int gridCols = 6;
     Grid grid(gridRows, gridCols, 3, 5);
+    grid.loadCarTextures(window.renderer);
     StockCar stockCar;
 
-    Car carPlayer(0, 3, 2, 1, true, gridRows, gridCols, true);
+    Car carPlayer(0, 3, 2, 1, true, gridRows, gridCols, true, "carPlayer");
     Car car2(4, 2, 1, 2, false, gridRows, gridCols);
     Car car3(3, 1, 1, 3, false, gridRows, gridCols);
     Car car4(3, 4, 2, 1, true, gridRows, gridCols);
+    Car car5(0, 5, 3, 1, true, gridRows, gridCols);
 
     stockCar.addCar(carPlayer);
     stockCar.addCar(car2);
     stockCar.addCar(car3);
     stockCar.addCar(car4);
+    stockCar.addCar(car5);
 
     std::cout << "nombre de voiture dans stockCar : " << stockCar.getStockCar().size() << std::endl;
     std::cout << "la fenetre est ouverte" << std::endl;
