@@ -1,81 +1,107 @@
 #include "gameLoop.hpp"
 #include "logic_game/hpp_files/Car.hpp"
-#include<iostream>
+#include "logic_game/hpp_files/StockCar.hpp"
 #include "graphic_game/hpp_files/Button.hpp"
-#include <SDL2/SDL.h>
+#include <iostream>
 #include <vector>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
-
-void mainLoop(Window& window, Grid& grid, std::vector<Button*>& buttons, Car& car) {
+void mainLoop(Window& window, Grid& grid, std::vector<Button*>& buttons, StockCar& stockCar, int& selectedCarIndex) {
     std::cout << "Game loop started!" << std::endl;
 
-    bool gridChanged = true; // Variable to check if the grid has changed
-    bool stateChanged = true; // Variable to check if the state has changed 
-
+    bool gridChanged = true;
+    bool stateChanged = true;
     const int FPS = 60;
     const int frameDelay = 1000 / FPS;
 
     Uint32 frameStart;
     int frameTime;
     SDL_Event event;
-    bool gameisrunning = true;   
+    bool gameisrunning = true;
+    bool victory = false;
+
+    std::vector<SDL_Texture*> gifFrames = window.loadGifFrames("assets/images", 52);  
+    int currentFrame = 0;
+    Uint32 lastGifFrameTime = 0;
+    const Uint32 gifFrameDelay = 60;  
 
     while (gameisrunning) {
         frameStart = SDL_GetTicks();
 
-        int x, y;
-        int level = 0;  // Variable to store the level of the game
-        SDL_GetMouseState(&x, &y);
-        // cout << "Mouse is at position (" << x << ", " << y << ")" << endl;
-        // cout<< "Entering event loop"<<endl;
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
-
                 case SDL_QUIT:
-                    cout << "Event type: " << event.type << endl;
                     gameisrunning = false;
                     break;
-                
+
                 case SDL_MOUSEBUTTONDOWN:
-                    cout << "Event type: " << event.type << endl;
-                    if (window.getCurrentState() == State::Intro) {
-                        if (event.button.button == SDL_BUTTON_LEFT) {
-                                if (buttons[0]->isClickedAtPosition(event.button.x, event.button.y)) {
-                                    cout << "Button clicked!" << endl;
-                                    window.switchState(State::Menu);
+                    if (event.button.button == SDL_BUTTON_LEFT) {
+                        int x = event.button.x;
+                        int y = event.button.y;
+
+                        if (window.getCurrentState() == State::Intro) {
+                            if (buttons[0]->isClickedAtPosition(x, y)) {
+                                buttons[0]->click();
+                                window.switchState(State::Menu);
+                                stateChanged = true;
+                            }
+                        } else if (window.getCurrentState() == State::Menu) {
+                            for (Button* button : buttons) {
+                                if (button->isClickedAtPosition(x, y)) {
+                                    button->click();
+                                    if (button == buttons[1]) {  
+                                        window.switchState(State::Parking);
+                                        stateChanged = true;
+                                    }
                                 }
-
-                        }
-                    }
-                    else if (window.getCurrentState() == State::Menu) {
-                        if (event.button.button == SDL_BUTTON_LEFT) {
-                            if (buttons[2]->isClickedAtPosition(event.button.x, event.button.y)) {
-                                cout << "Level 1 selected!" << endl;
-                                level = 1;
-                                buttons[2]->click();
-                            } else if (buttons[3]->isClickedAtPosition(event.button.x, event.button.y)) {
-                                cout << "Level 2 selected!" << endl;
-                                level = 2;
-                                buttons[3]->click();
-                            } else if (buttons[4]->isClickedAtPosition(event.button.x, event.button.y)) {
-                                cout << "Level 3 selected!" << endl;
-                                level = 3;
-                                buttons[4]->click();
                             }
-                            if (buttons[1]->isClickedAtPosition(event.button.x, event.button.y)) {
-                                cout << "Play button clicked!" << endl;
-                                window.switchState(State::Parking);
+                        } else if (window.getCurrentState() == State::Parking) {
+                            for (int i = 0; i < stockCar.getStockCar().size(); ++i) {
+                                Car& car = stockCar.getStockCar()[i];
+                                int carX = car.getPosX() * 110;
+                                int carY = car.getPosY() * 110;
+                                int carW = car.isHorizontalOrientation() ? car.getWidth() * 100 : car.getHeight() * 100;
+                                int carH = car.isHorizontalOrientation() ? car.getHeight() * 100 : car.getWidth() * 100;
+
+                                if (x >= carX && x <= carX + carW && y >= carY && y <= carY + carH) {
+                                    selectedCarIndex = i;
+                                    grid.setSelectedCar(&car);
+                                    break;
+                                }
                             }
                         }
-
                     }
                     break;
 
                 case SDL_KEYDOWN:
-                    cout << "Event type: " << event.type << endl;
-                    if (event.key.keysym.sym == SDLK_RETURN) {
+                    if (window.getCurrentState() == State::Parking && selectedCarIndex != -1) {
+                        Car& selectedCar = stockCar.getStockCar()[selectedCarIndex];
+                        switch (event.key.keysym.sym) {
+                            case SDLK_UP:
+                                selectedCar.moveUp();
+                                break;
+                            case SDLK_DOWN:
+                                selectedCar.moveDown();
+                                break;
+                            case SDLK_LEFT:
+                                selectedCar.moveLeft();
+                                break;
+                            case SDLK_RIGHT:
+                                selectedCar.moveRight();
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (selectedCar.getIsPlayer() && selectedCar.getPosX() == grid.getExitCol() - 1 && selectedCar.getPosY() == grid.getExitRow()) {
+                            victory = true;
+                        }
+
+                        gridChanged = true;
+                    } else if (event.key.keysym.sym == SDLK_RETURN) {
                         State newState;
-                        switch(window.getCurrentState()) {
+                        switch (window.getCurrentState()) {
                             case State::Intro:
                                 newState = State::Menu;
                                 break;
@@ -87,34 +113,45 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button*>& buttons, Car& ca
                                 break;
                         }
                         window.switchState(newState);
+                        stateChanged = true;
                     }
-
-                default:
                     break;
-            }   
+            }
         }
-    
-        // Render game state outside of the SDL_PollEvent loop
+
         switch (window.getCurrentState()) {
             case State::Intro:
-                introPage(window, buttons);
+                if (SDL_GetTicks() - lastGifFrameTime > gifFrameDelay && currentFrame < gifFrames.size() - 1) {
+                    currentFrame++;
+                    lastGifFrameTime = SDL_GetTicks();
+                }
+                introPage(window, buttons, gifFrames, currentFrame);
                 break;
             case State::Menu:
                 menuPage(window, buttons);
                 break;
             case State::Parking:
                 if (stateChanged) {
-                    SDL_RenderClear(window.renderer); 
-                    grid.setCar(car);
-            grid.DisplayOnScreen(window.window, window.renderer); 
-                    // stateChanged = false;
+                    SDL_RenderClear(window.renderer);
+                    grid.setStockCar(stockCar.getStockCar());
+                    grid.DisplayOnScreen(window.window, window.renderer);
+                    stateChanged = false;
+                }
+                if (gridChanged) {
+                    SDL_RenderClear(window.renderer);
+                    grid.setStockCar(stockCar.getStockCar());
+                    grid.DisplayOnScreen(window.window, window.renderer);
+                    gridChanged = false;
+                }
+                if (victory) {
+                    window.drawText("Victoire!", 900, 50, 100);
                 }
                 break;
             default:
                 std::cerr << "État invalide !" << std::endl;
                 break;
         }
-        
+
         SDL_RenderPresent(window.renderer);
 
         frameTime = SDL_GetTicks() - frameStart;
@@ -122,41 +159,55 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button*>& buttons, Car& ca
         if (frameDelay > frameTime) {
             SDL_Delay(frameDelay - frameTime);
         }
+
+        if (victory) {
+            SDL_Delay(3000);
+            stockCar.resetCars();
+
+            for (Button* button : buttons) {
+                button->resetClick();
+            }
+
+            window.switchState(State::Menu);
+            victory = false;
+            stateChanged = true;
+        }
     }
 
-    std::cout << "la fenetre est fermée" << std::endl;
     std::cout << "Game loop ended!" << std::endl;
 }
 
-
-
-void introPage(Window& window, std::vector<Button*>& buttons){
+void introPage(Window& window, std::vector<Button*>& buttons, std::vector<SDL_Texture*>& gifFrames, int currentFrame) {
     SDL_SetRenderDrawColor(window.renderer, 0, 0, 0, 255);
     SDL_RenderClear(window.renderer);
-    window.drawText("Bienvenue dans le jeu !", 100, 100, 30);
+
+    if (!gifFrames.empty()) {
+        SDL_Texture* currentTexture = gifFrames[currentFrame];
+        int windowWidth, windowHeight;
+        SDL_GetWindowSize(window.window, &windowWidth, &windowHeight);
+        window.renderTexture(currentTexture, 0, 0, windowWidth, windowHeight);
+    }
+
+    window.drawText("PARK", 880, 50, 100);
+    window.drawText("AND", 970, 150, 100);
+    window.drawText("FURIOUS", 1050, 250, 100);
 
     if (!buttons.empty()) {
         buttons[0]->draw();
     }
-
     SDL_RenderPresent(window.renderer);
-
 }
 
-void menuPage(Window& window, std::vector<Button*>& buttons){
+void menuPage(Window& window, std::vector<Button*>& buttons) {
     SDL_SetRenderDrawColor(window.renderer, 0, 0, 0, 255);
     SDL_RenderClear(window.renderer);
     window.drawText("Choose your Level", 600, 100, 30);
 
     if (!buttons.empty()) {
-        buttons[2]->draw();
-        buttons[3]->draw();
-        buttons[4]->draw();
-        if (buttons[2]->isClicked() || buttons[3]->isClicked() || buttons[4]->isClicked()){
-            buttons[1]->draw();
+        for (size_t i = 1; i < buttons.size(); ++i) {
+            buttons[i]->draw();
         }
     }
 
     SDL_RenderPresent(window.renderer);
 }
-

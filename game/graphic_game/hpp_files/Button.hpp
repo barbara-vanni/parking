@@ -18,6 +18,7 @@ public:
     ~Button();
     void draw();
     void click();
+    void resetClick();
     bool isClicked() const { return clicked; }
     bool isClickedAtPosition(int x, int y);
     void highlight();

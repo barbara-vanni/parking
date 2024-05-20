@@ -15,7 +15,7 @@ Button::Button(SDL_Renderer *renderer, int x, int y, int w, int h, const std::st
     this->size = size;
     bool clicked;
 
-    TTF_Font *font = TTF_OpenFont("font/Oswald.ttf", size);
+    TTF_Font *font = TTF_OpenFont("assets/font/ChangaOne-Italic.ttf", size);
     if (font == nullptr) {
         std::cout << "Erreur lors de l'ouverture de la police : " << TTF_GetError() << std::endl;
         exit(1);
@@ -44,11 +44,10 @@ Button::~Button() {
 void Button::draw() {
     SDL_RenderCopy(renderer, texture, nullptr, &rect);
     if (clicked) {
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // Green color
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
     } else {
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     }
-    // SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // White color
 
     SDL_RenderDrawRect(renderer, &rect);
 }
@@ -57,8 +56,11 @@ void Button::click() {
     this->clicked = true;
 }
 
+void Button::resetClick() {
+    this->clicked = false;
+}
+
 bool Button::isClickedAtPosition(int x, int y) {
-    // Debug output to check coordinates
     cout << "Button rect: x=" << rect.x << ", y=" << rect.y << ", w=" << rect.w << ", h=" << rect.h << endl;
     cout << "Mouse click: x=" << x << ", y=" << y << endl;
 

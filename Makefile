@@ -1,55 +1,51 @@
-# TARGET := parking
-# CXX := g++
+CXX := g++
+CXXFLAGS := -I src/include -I /usr/include/SDL2
+LDFLAGS := -L src/lib
+LIBS := -lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image
 
-# SRCS_FOLDER := src
-# INCLUDE_FOLDER := include
-# PREREQUISITES_FOLDER := prerequisites
-# OBJS_FOLDER := objs
-# BIN_FOLDER := .
+# Directories
+SRC_DIR := game
+GRAPHIC_DIR := $(SRC_DIR)/graphic_game/cpp_files
+LOGIC_DIR := $(SRC_DIR)/logic_game/cpp_files
 
-# SDL_INCLUDE := -I./include
+# Source files
+SRC_FILES := main.cpp \
+             $(GRAPHIC_DIR)/Window.cpp \
+             $(LOGIC_DIR)/Car.cpp \
+             $(LOGIC_DIR)/StockCar.cpp \
+             $(LOGIC_DIR)/GameObject.cpp \
+             $(GRAPHIC_DIR)/graphicInit.cpp \
+             $(SRC_DIR)/Grid.cpp \
+             $(SRC_DIR)/gameLoop.cpp \
+             $(GRAPHIC_DIR)/Button.cpp
 
-# CXXFLAGS := -Wall -Wextra -flto -O1 -std=c++11 -I$(INCLUDE_FOLDER) -I$(PREREQUISITES_FOLDER) -I$(SDL_INCLUDE) -MMD
-# LDFLAGS := -L./lib/
+# Object files
+OBJ_FILES := $(SRC_FILES:.cpp=.o)
 
-# SRCS_RAW := main.cpp \
-# 			game/graphic_game/cpp_files/Window.cpp 
+# Executable
+TARGET := main
 
+# Default target
+all: $(TARGET)
 
-# SRCS := $(addprefix $(SRCS_FOLDER)/, $(SRCS_RAW))
-# OBJS := $(SRCS:$(SRCS_FOLDER)/%.cpp=$(OBJS_FOLDER)/%.o)
-# DEPS := $(OBJS:.o=.d)
-# PREREQUISITES := $(wildcard $(PREREQUISITES_FOLDER)/*.cpp)
+# Link the target executable
+$(TARGET): $(OBJ_FILES)
+	$(CXX) -o $@ $^ $(LDFLAGS) $(LIBS)
 
-# .PHONY: all clean re fclean test
+# Compile source files into object files
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# all: $(TARGET)
+# Test target for image_test
+imageTest: imageTest.o
+	$(CXX) -o $@ $^ $(LDFLAGS) $(LIBS)
 
-# $(TARGET): $(OBJS)
-# 	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $(BIN_FOLDER)/$@ $^ -lSDL2 -lSDL2_ttf -lSDL2_image
+imageTest.o: imageTest.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# $(OBJS_FOLDER)/%.o: $(SRCS_FOLDER)/%.cpp | $(OBJS_FOLDER)
-# 	$(CXX) $(CXXFLAGS) -c $< -o $@ -MMD -MF $(@:.o=.d)
+# Clean up build files
+clean:
+	rm -f $(OBJ_FILES) $(TARGET) imageTest.o imageTest
 
-# -include $(DEPS)
-
-# $(OBJS_FOLDER):
-# 	mkdir -p $(OBJS_FOLDER)
-
-# clean:
-# 	$(RM) $(OBJS) $(DEPS)
-
-# fclean: clean
-# 	$(RM) $(BIN_FOLDER)/$(TARGET)
-
-# re: fclean all
-
-# test: all
-# 	$(BIN_FOLDER)/$(TARGET) grille
-
-VLD_DIR = "C:\\Program Files (x86)\\Visual Leak Detector"
-
-all:
-	g++ -I src/include -I $(VLD_DIR)/include -L src/lib -L $(VLD_DIR)/lib -o main main.cpp game/graphic_game/cpp_files/Window.cpp game/logic_game/cpp_files/Car.cpp game/logic_game/cpp_files/GameObject.cpp game/graphic_game/cpp_files/graphicInit.cpp game/Grid.cpp game/gameLoop.cpp game/graphic_game/cpp_files/Button.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -lvld
-# all:
-# 	g++ -I src/include -L src/lib -o main main.cpp game/graphic_game/cpp_files/Window.cpp game/logic_game/cpp_files/Car.cpp game/logic_game/cpp_files/GameObject.cpp game/graphic_game/cpp_files/graphicInit.cpp game/Grid.cpp game/gameLoop.cpp game/graphic_game/cpp_files/Button.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf 
+# Phony targets
+.PHONY: all clean imageTest
