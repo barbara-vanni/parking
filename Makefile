@@ -40,9 +40,16 @@ $(TARGET): $(OBJ_FILES)
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+# Test target for image_test
+imageTest: imageTest.o
+	$(CXX) -o $@ $^ $(LDFLAGS) $(LIBS)
+
+imageTest.o: imageTest.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
 # Clean up build files
 clean:
-	rm -f $(OBJ_FILES) $(TARGET)
+	rm -f $(OBJ_FILES) $(TARGET) imageTest.o imageTest
 
 # Phony targets
-.PHONY: all clean
+.PHONY: all clean imageTest
