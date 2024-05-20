@@ -198,16 +198,42 @@ void introPage(Window& window, std::vector<Button*>& buttons, std::vector<SDL_Te
     SDL_RenderPresent(window.renderer);
 }
 
+
 void menuPage(Window& window, std::vector<Button*>& buttons) {
     SDL_SetRenderDrawColor(window.renderer, 0, 0, 0, 255);
     SDL_RenderClear(window.renderer);
-    window.drawText("Choose your Level", 600, 100, 30);
 
+    SDL_Surface* backgroundSurface = IMG_Load("assets/images/menu.png");
+    if (backgroundSurface == nullptr) {
+        std::cerr << "Erreur lors du chargement de l'image de fond : " << IMG_GetError() << std::endl;
+        return;
+    }
+    SDL_Texture* backgroundTexture = SDL_CreateTextureFromSurface(window.renderer, backgroundSurface);
+    SDL_FreeSurface(backgroundSurface);
+
+    if (backgroundTexture == nullptr) {
+        std::cerr << "Erreur lors de la création de la texture de fond : " << SDL_GetError() << std::endl;
+        return;
+    }
+    int windowWidth, windowHeight;
+    SDL_GetWindowSize(window.window, &windowWidth, &windowHeight);
+
+    SDL_Rect destRect;
+    destRect.x = 0;
+    destRect.y = 0;
+    destRect.w = windowWidth;
+    destRect.h = windowHeight;
+
+    SDL_RenderCopy(window.renderer, backgroundTexture, nullptr, &destRect);
+    window.drawText("PARK", 620, 10, 100);
+    window.drawText("AND", 850, 60, 100);
+    window.drawText("FURIOUS", 1050, 110, 100);
+    window.drawText("Choose your Level", 30, 400, 60);
     if (!buttons.empty()) {
         for (size_t i = 1; i < buttons.size(); ++i) {
             buttons[i]->draw();
         }
     }
-
+    SDL_DestroyTexture(backgroundTexture);
     SDL_RenderPresent(window.renderer);
 }

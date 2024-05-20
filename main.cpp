@@ -38,10 +38,10 @@ int main(int argc, char *argv[]) {
 
     std::vector<Button*> buttons;
     Button* buttonBegin = new Button(window.renderer, 650, 600, 200, 50, "Start", 30);
-    Button* buttonPlay = new Button(window.renderer, 600, 600, 200, 50, "Play", 30);
-    Button* buttonLevel1 = new Button(window.renderer, 250, 200, 100, 80, "1", 30);
-    Button* buttonLevel2 = new Button(window.renderer, 650, 200, 100, 80, "2", 30);
-    Button* buttonLevel3 = new Button(window.renderer, 1050, 200, 100, 80, "3", 30);
+    Button* buttonPlay = new Button(window.renderer, 1250, 650, 200, 50, "Play", 30);
+    Button* buttonLevel1 = new Button(window.renderer, 300, 550, 100, 80, "1", 30);
+    Button* buttonLevel2 = new Button(window.renderer, 700, 550, 100, 80, "2", 30);
+    Button* buttonLevel3 = new Button(window.renderer, 1100, 550, 100, 80, "3", 30);
 
     buttons.push_back(buttonBegin);
     buttons.push_back(buttonPlay);
