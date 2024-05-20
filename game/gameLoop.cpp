@@ -21,6 +21,11 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, StockCar
     bool gameisrunning = true;
     bool victory = false;
 
+    std::vector<SDL_Texture*> gifFrames = window.loadGifFrames("assets/images", 60);  // 10 frames par exemple
+    int currentFrame = 0;
+    Uint32 lastGifFrameTime = 0;
+    const Uint32 gifFrameDelay = 100;  // Délai de 100 ms entre chaque frame
+
     while (gameisrunning) {
         frameStart = SDL_GetTicks();
 
@@ -125,7 +130,12 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, StockCar
         // Render game state outside of the SDL_PollEvent loop
         switch (window.getCurrentState()) {
             case State::Intro:
-                introPage(window, buttons);
+                // Mettez à jour la frame du GIF si le délai est écoulé et que nous ne sommes pas à la dernière frame
+                if (SDL_GetTicks() - lastGifFrameTime > gifFrameDelay && currentFrame < gifFrames.size() - 1) {
+                    currentFrame++;
+                    lastGifFrameTime = SDL_GetTicks();
+                }
+                introPage(window, buttons, gifFrames, currentFrame);
                 break;
             case State::Menu:
                 SDL_SetRenderDrawColor(window.renderer, 0, 0, 0, 255);
@@ -178,9 +188,19 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button>& buttons, StockCar
     std::cout << "Game loop ended!" << std::endl;
 }
 
-void introPage(Window& window, std::vector<Button>& buttons) {
+void introPage(Window& window, std::vector<Button>& buttons, std::vector<SDL_Texture*>& gifFrames, int currentFrame) {
     SDL_SetRenderDrawColor(window.renderer, 0, 0, 0, 255);
     SDL_RenderClear(window.renderer);
+
+    // Rendre la frame GIF en plein écran
+    if (!gifFrames.empty()) {
+        SDL_Texture* currentTexture = gifFrames[currentFrame];
+        int windowWidth, windowHeight;
+        SDL_GetWindowSize(window.window, &windowWidth, &windowHeight);
+        window.renderTexture(currentTexture, 0, 0, windowWidth, windowHeight);  // Plein écran
+    }
+
+    // Dessiner le texte par-dessus l'image
     window.drawText("Bienvenue dans le jeu !", 100, 100, 30);
 
     for (Button& button : buttons) {
@@ -188,3 +208,5 @@ void introPage(Window& window, std::vector<Button>& buttons) {
     }
     SDL_RenderPresent(window.renderer);
 }
+
+

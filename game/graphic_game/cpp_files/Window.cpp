@@ -1,3 +1,4 @@
+#include<vector>
 #include "../hpp_files/Window.hpp"
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
@@ -103,10 +104,25 @@ SDL_Texture* Window::loadTexture(const std::string &file) {
     return newTexture;
 }
 
-void Window::renderTexture(SDL_Texture* tex, int x, int y) {
+void Window::renderTexture(SDL_Texture* tex, int x, int y, int w, int h) {
     SDL_Rect dst;
     dst.x = x;
     dst.y = y;
-    SDL_QueryTexture(tex, NULL, NULL, &dst.w, &dst.h);
+    dst.w = w;
+    dst.h = h;
     SDL_RenderCopy(renderer, tex, NULL, &dst);
+}
+
+std::vector<SDL_Texture*> Window::loadGifFrames(const std::string &path, int frameCount) {
+    std::vector<SDL_Texture*> frames;
+    for (int i = 0; i < frameCount; ++i) {
+        std::string framePath = path + "/bryan_frame_" + (i < 10 ? "00" : (i < 100 ? "0" : "")) + std::to_string(i) + ".png";
+        SDL_Texture* frame = loadTexture(framePath);
+        if (frame != nullptr) {
+            frames.push_back(frame);
+        } else {
+            std::cerr << "Erreur lors du chargement de la frame : " << framePath << std::endl;
+        }
+    }
+    return frames;
 }

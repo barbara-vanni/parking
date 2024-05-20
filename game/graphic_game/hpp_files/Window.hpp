@@ -1,6 +1,6 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
-
+#include <vector>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <string>
@@ -24,7 +24,8 @@ public:
     State getCurrentState();
     void drawText(const std::string &text, int x, int y, int size);
     SDL_Texture* loadTexture(const std::string &file);
-    void renderTexture(SDL_Texture* tex, int x, int y);
+    void renderTexture(SDL_Texture* tex, int x, int y, int w, int h);
+    std::vector<SDL_Texture*> loadGifFrames(const std::string &path, int frameCount);
 };
 
 #endif
