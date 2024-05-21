@@ -11,7 +11,6 @@ bool Car::isColliding(const Car& other) const {
 
 
 void Car::move(int distance) {
-    // Implémentez la logique de mouvement ici si nécessaire
     std::cout << "Move car by " << distance << " units" << std::endl;
 }
 
