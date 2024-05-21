@@ -140,13 +140,13 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button*>& buttons, StockCa
                 if (stateChanged) {
                     SDL_RenderClear(window.renderer);
                     grid.setStockCar(stockCar.getStockCar());
-                    grid.DisplayOnScreen(window.window, window.renderer);
+                    grid.displayOnScreen(window.window, window.renderer);
                     stateChanged = false;
                 }
                 if (gridChanged) {
                     SDL_RenderClear(window.renderer);
                     grid.setStockCar(stockCar.getStockCar());
-                    grid.DisplayOnScreen(window.window, window.renderer);
+                    grid.displayOnScreen(window.window, window.renderer);
                     gridChanged = false;
                 }
                 if (victory) {

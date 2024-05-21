@@ -96,7 +96,7 @@ void Grid::renderCars(SDL_Renderer* renderer) const {
     }
 }
 
-void Grid::DisplayOnScreen(SDL_Window* window, SDL_Renderer* renderer) const {
+void Grid::displayOnScreen(SDL_Window* window, SDL_Renderer* renderer) const {
     if (renderer == nullptr) {
         std::cerr << "Renderer is null!" << std::endl;
         return;

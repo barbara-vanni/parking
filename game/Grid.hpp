@@ -23,7 +23,7 @@ class Grid
 public:
    Grid(int r, int c, int exitRow, int exitCol); // build grid with r rows, c cols,  blocks around edge with random exit
    void setCar(const Car& car);
-   void DisplayOnScreen(SDL_Window* window, SDL_Renderer* renderer) const;
+   void displayOnScreen(SDL_Window* window, SDL_Renderer* renderer) const;
    void setStockCar(const std::vector<Car>& stockCar);
    void setSelectedCar(const Car* car);
    int getWidth() const { return maxCol; };
