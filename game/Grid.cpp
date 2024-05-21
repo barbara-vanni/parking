@@ -115,7 +115,7 @@ void Grid::DisplayOnScreen(SDL_Window* window, SDL_Renderer* renderer) const {
                 SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
                 SDL_RenderFillRect(renderer, &rect);
             } else {
-                SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+                SDL_SetRenderDrawColor(renderer, 255, 205, 125, 255);
                 SDL_RenderFillRect(renderer, &rect);
             }
         }
