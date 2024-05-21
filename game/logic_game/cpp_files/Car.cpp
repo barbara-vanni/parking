@@ -5,10 +5,10 @@
 Car::~Car() {}
 
 bool Car::isColliding(const Car& other) const {
-    if (this == &other) return false; // Une voiture ne peut pas entrer en collision avec elle-même
-    return !((getPosX() + getWidth())  <= other.getPosX() || getPosX() >= other.getPosX() + other.getWidth() ||
-             (getPosY() + getHeight())  <= other.getPosY() || getPosY() >= other.getPosY() + other.getHeight());
+    return !((getPosX() + getWidth() <= other.getPosX()) || (getPosX() >= other.getPosX() + other.getWidth()) ||
+             (getPosY() + getHeight() <= other.getPosY()) || (getPosY() >= other.getPosY() + other.getHeight()));
 }
+
 
 void Car::move(int distance) {
     // Implémentez la logique de mouvement ici si nécessaire
@@ -21,7 +21,7 @@ void Car::moveUp(const std::vector<Car>& cars) {
         if (withinLimits(getPosX(), newPosY)) {
             bool collision = false;
             for (const auto& car : cars) {
-                if (car.isColliding(*this)) {
+                if (this != &car && car.isColliding(Car(getPosX(), newPosY, getWidth(), getHeight(), isHorizontalOrientation(), maxRow, maxCol))) {
                     collision = true;
                     break;
                 }
@@ -39,7 +39,7 @@ void Car::moveDown(const std::vector<Car>& cars) {
         if (withinLimits(getPosX(), newPosY)) {
             bool collision = false;
             for (const auto& car : cars) {
-                if (car.isColliding(*this)) {
+                if (this != &car && car.isColliding(Car(getPosX(), newPosY, getWidth(), getHeight(), isHorizontalOrientation(), maxRow, maxCol))) {
                     collision = true;
                     break;
                 }
@@ -57,7 +57,7 @@ void Car::moveLeft(const std::vector<Car>& cars) {
         if (withinLimits(newPosX, getPosY())) {
             bool collision = false;
             for (const auto& car : cars) {
-                if (car.isColliding(*this)) {
+                if (this != &car && car.isColliding(Car(newPosX, getPosY(), getWidth(), getHeight(), isHorizontalOrientation(), maxRow, maxCol))) {
                     collision = true;
                     break;
                 }
@@ -75,7 +75,7 @@ void Car::moveRight(const std::vector<Car>& cars) {
         if (withinLimits(newPosX, getPosY())) {
             bool collision = false;
             for (const auto& car : cars) {
-                if (car.isColliding(*this)) {
+                if (this != &car && car.isColliding(Car(newPosX, getPosY(), getWidth(), getHeight(), isHorizontalOrientation(), maxRow, maxCol))) {
                     collision = true;
                     break;
                 }
@@ -86,6 +86,7 @@ void Car::moveRight(const std::vector<Car>& cars) {
         }
     }
 }
+
 
 void Car::resetPosition() {
     setPosX(initialPosX);
@@ -100,3 +101,4 @@ bool Car::withinLimits(int newPosX, int newPosY) const {
         return newPosX >= 0 && newPosX < maxCol && newPosY >= 0 && (newPosY + getHeight() - 1) < maxRow;
     }
 }
+
