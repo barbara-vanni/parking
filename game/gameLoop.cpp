@@ -144,7 +144,7 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button*>& buttons, StockCa
                     gridChanged = false;
                 }
                 if (victory) {
-                    window.drawText("Victoire!", 900, 50, 100);
+                    window.drawText("Victory!", 900, 50, 100);
                 }
                 break;
             default:
