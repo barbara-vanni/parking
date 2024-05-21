@@ -34,12 +34,19 @@ int main(int argc, char *argv[]) {
     Car car3(3, 1, 1, 3, false, gridRows, gridCols);
     Car car4(3, 4, 2, 1, true, gridRows, gridCols);
     Car car5(0, 5, 3, 1, true, gridRows, gridCols);
+    Car car6(4, 1, 2, 1, true, gridRows, gridCols);
+    Car car7(2, 0, 2, 1, true, gridRows, gridCols);
+    Car car8(2, 1, 1, 3, false, gridRows, gridCols);
 
     stockCar.addCar(carPlayer);
     stockCar.addCar(car2);
     stockCar.addCar(car3);
     stockCar.addCar(car4);
     stockCar.addCar(car5);
+    stockCar.addCar(car6);
+    stockCar.addCar(car7);
+    stockCar.addCar(car8);
+
 
     std::cout << "nombre de voiture dans stockCar : " << stockCar.getStockCar().size() << std::endl;
     std::cout << "la fenetre est ouverte" << std::endl;

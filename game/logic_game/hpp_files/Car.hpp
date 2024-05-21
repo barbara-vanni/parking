@@ -2,6 +2,7 @@
 #define CAR_HPP
 #include "GameObject.hpp"
 #include <string>
+#include <vector>
 
 // Car class declaration, child of GameObject
 
@@ -14,13 +15,15 @@ public:
     ~Car();
 
     void move(int distance);
-    void moveUp();
-    void moveDown();
-    void moveLeft();
-    void moveRight();
+    void moveUp(const std::vector<Car>& cars);
+    void moveDown(const std::vector<Car>& cars);
+    void moveLeft(const std::vector<Car>& cars);
+    void moveRight(const std::vector<Car>& cars);
     void resetPosition();
     bool getIsPlayer() const { return isPlayer; }
     std::string getName() const { return name; }
+
+    bool isColliding(const Car& other) const;
 
 private:
     int initialPosX, initialPosY; 

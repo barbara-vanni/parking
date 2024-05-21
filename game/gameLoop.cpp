@@ -77,49 +77,50 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button*>& buttons, StockCa
                     }
                     break;
 
-                case SDL_KEYDOWN:
-                    if (window.getCurrentState() == State::Parking && selectedCarIndex != -1) {
-                        Car& selectedCar = stockCar.getStockCar()[selectedCarIndex];
-                        switch (event.key.keysym.sym) {
-                            case SDLK_UP:
-                                selectedCar.moveUp();
-                                break;
-                            case SDLK_DOWN:
-                                selectedCar.moveDown();
-                                break;
-                            case SDLK_LEFT:
-                                selectedCar.moveLeft();
-                                break;
-                            case SDLK_RIGHT:
-                                selectedCar.moveRight();
-                                break;
-                            default:
-                                break;
-                        }
+        case SDL_KEYDOWN:
+            if (window.getCurrentState() == State::Parking && selectedCarIndex != -1) {
+                Car& selectedCar = stockCar.getStockCar()[selectedCarIndex];
+                switch (event.key.keysym.sym) {
+                    case SDLK_UP:
+                        selectedCar.moveUp(stockCar.getStockCar());
+                        break;
+                    case SDLK_DOWN:
+                        selectedCar.moveDown(stockCar.getStockCar());
+                        break;
+                    case SDLK_LEFT:
+                        selectedCar.moveLeft(stockCar.getStockCar());
+                        break;
+                    case SDLK_RIGHT:
+                        selectedCar.moveRight(stockCar.getStockCar());
+                        break;
+                    default:
+                        break;
+                }
 
-                        if (selectedCar.getIsPlayer() && selectedCar.getPosX() == grid.getExitCol() - 1 && selectedCar.getPosY() == grid.getExitRow()) {
-                            victory = true;
-                        }
+                if (selectedCar.getIsPlayer() && selectedCar.getPosX() == grid.getExitCol() - 1 && selectedCar.getPosY() == grid.getExitRow()) {
+                    victory = true;
+                }
 
-                        gridChanged = true;
-                    } else if (event.key.keysym.sym == SDLK_RETURN) {
-                        State newState;
-                        switch (window.getCurrentState()) {
-                            case State::Intro:
-                                newState = State::Menu;
-                                break;
-                            case State::Menu:
-                                newState = State::Parking;
-                                break;
-                            default:
-                                newState = State::Intro;
-                                break;
-                        }
-                        window.switchState(newState);
-                        stateChanged = true;
-                    }
-                    break;
+                gridChanged = true;
+            } else if (event.key.keysym.sym == SDLK_RETURN) {
+                State newState;
+                switch (window.getCurrentState()) {
+                    case State::Intro:
+                        newState = State::Menu;
+                        break;
+                    case State::Menu:
+                        newState = State::Parking;
+                        break;
+                    default:
+                        newState = State::Intro;
+                        break;
+                }
+                window.switchState(newState);
+                stateChanged = true;
             }
+            break;
+    }
+
         }
 
         switch (window.getCurrentState()) {
@@ -147,7 +148,7 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button*>& buttons, StockCa
                     gridChanged = false;
                 }
                 if (victory) {
-                    window.drawText("Victoire!", 900, 50, 100);
+                    window.drawText("Victory!", 900, 50, 100);
                 }
                 break;
             default:
