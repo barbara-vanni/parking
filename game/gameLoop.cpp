@@ -15,6 +15,7 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button*>& buttons, StockCa
 
     bool gridChanged = true;
     bool stateChanged = true;
+    bool levelSelected = false; 
     const int FPS = 60;
     const int frameDelay = 1000 / FPS;
 
@@ -50,12 +51,14 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button*>& buttons, StockCa
                                 stateChanged = true;
                             }
                         } else if (window.getCurrentState() == State::Menu) {
-                            for (Button* button : buttons) {
-                                if (button->isClickedAtPosition(x, y)) {
-                                    button->click();
-                                    if (button == buttons[1]) {  
+                            for (size_t i = 1; i < buttons.size(); ++i) {
+                                if (buttons[i]->isClickedAtPosition(x, y)) {
+                                    buttons[i]->click();
+                                    if (i == 1) {  
                                         window.switchState(State::Parking);
                                         stateChanged = true;
+                                    } else {
+                                        levelSelected = true; 
                                     }
                                 }
                             }
@@ -77,50 +80,49 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button*>& buttons, StockCa
                     }
                     break;
 
-        case SDL_KEYDOWN:
-            if (window.getCurrentState() == State::Parking && selectedCarIndex != -1) {
-                Car& selectedCar = stockCar.getStockCar()[selectedCarIndex];
-                switch (event.key.keysym.sym) {
-                    case SDLK_UP:
-                        selectedCar.moveUp(stockCar.getStockCar());
-                        break;
-                    case SDLK_DOWN:
-                        selectedCar.moveDown(stockCar.getStockCar());
-                        break;
-                    case SDLK_LEFT:
-                        selectedCar.moveLeft(stockCar.getStockCar());
-                        break;
-                    case SDLK_RIGHT:
-                        selectedCar.moveRight(stockCar.getStockCar());
-                        break;
-                    default:
-                        break;
-                }
+                case SDL_KEYDOWN:
+                    if (window.getCurrentState() == State::Parking && selectedCarIndex != -1) {
+                        Car& selectedCar = stockCar.getStockCar()[selectedCarIndex];
+                        switch (event.key.keysym.sym) {
+                            case SDLK_UP:
+                                selectedCar.moveUp(stockCar.getStockCar());
+                                break;
+                            case SDLK_DOWN:
+                                selectedCar.moveDown(stockCar.getStockCar());
+                                break;
+                            case SDLK_LEFT:
+                                selectedCar.moveLeft(stockCar.getStockCar());
+                                break;
+                            case SDLK_RIGHT:
+                                selectedCar.moveRight(stockCar.getStockCar());
+                                break;
+                            default:
+                                break;
+                        }
 
-                if (selectedCar.getIsPlayer() && selectedCar.getPosX() == grid.getExitCol() - 1 && selectedCar.getPosY() == grid.getExitRow()) {
-                    victory = true;
-                }
+                        if (selectedCar.getIsPlayer() && selectedCar.getPosX() == grid.getExitCol() - 1 && selectedCar.getPosY() == grid.getExitRow()) {
+                            victory = true;
+                        }
 
-                gridChanged = true;
-            } else if (event.key.keysym.sym == SDLK_RETURN) {
-                State newState;
-                switch (window.getCurrentState()) {
-                    case State::Intro:
-                        newState = State::Menu;
-                        break;
-                    case State::Menu:
-                        newState = State::Parking;
-                        break;
-                    default:
-                        newState = State::Intro;
-                        break;
-                }
-                window.switchState(newState);
-                stateChanged = true;
+                        gridChanged = true;
+                    } else if (event.key.keysym.sym == SDLK_RETURN) {
+                        State newState;
+                        switch (window.getCurrentState()) {
+                            case State::Intro:
+                                newState = State::Menu;
+                                break;
+                            case State::Menu:
+                                newState = State::Parking;
+                                break;
+                            default:
+                                newState = State::Intro;
+                                break;
+                        }
+                        window.switchState(newState);
+                        stateChanged = true;
+                    }
+                    break;
             }
-            break;
-    }
-
         }
 
         switch (window.getCurrentState()) {
@@ -132,7 +134,7 @@ void mainLoop(Window& window, Grid& grid, std::vector<Button*>& buttons, StockCa
                 introPage(window, buttons, gifFrames, currentFrame);
                 break;
             case State::Menu:
-                menuPage(window, buttons);
+                menuPage(window, buttons, levelSelected);
                 break;
             case State::Parking:
                 if (stateChanged) {
@@ -203,7 +205,7 @@ void introPage(Window& window, std::vector<Button*>& buttons, std::vector<SDL_Te
 }
 
 
-void menuPage(Window& window, std::vector<Button*>& buttons) {
+void menuPage(Window& window, std::vector<Button*>& buttons, bool& levelSelected) {
     SDL_SetRenderDrawColor(window.renderer, 0, 0, 0, 255);
     SDL_RenderClear(window.renderer);
 
@@ -233,9 +235,14 @@ void menuPage(Window& window, std::vector<Button*>& buttons) {
     window.drawText("AND", 850, 60, 100);
     window.drawText("FURIOUS", 1050, 110, 100);
     window.drawText("Choose your Level", 30, 400, 60);
+
     if (!buttons.empty()) {
-        for (size_t i = 1; i < buttons.size(); ++i) {
+        for (size_t i = 2; i < buttons.size(); ++i) {
             buttons[i]->draw();
+        }
+
+        if (levelSelected) {
+            buttons[1]->draw(); 
         }
     }
     SDL_DestroyTexture(backgroundTexture);

@@ -11,5 +11,5 @@
 
 void mainLoop(Window& window, Grid& grid, std::vector<Button*>& buttons, StockCar& stockCar, int& selectedCarIndex);
 void introPage(Window& window, std::vector<Button*>& buttons, std::vector<SDL_Texture*>& gifFrames, int currentFrame);
-void menuPage(Window& window, std::vector<Button*>& buttons);
+void menuPage(Window& window, std::vector<Button*>& buttons, bool& levelSelected);
 #endif 
