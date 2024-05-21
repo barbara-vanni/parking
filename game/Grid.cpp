@@ -7,6 +7,10 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+// class Grid implementation
+// Constructor to build the grid with r rows, c cols, blocks around edge with random exit
+
+
 Grid::Grid(int r, int c, int exitRow, int exitCol) : exitRow(exitRow), exitCol(exitCol) {
     if(r < 4 || c < 4) {
         maxRow = 3;

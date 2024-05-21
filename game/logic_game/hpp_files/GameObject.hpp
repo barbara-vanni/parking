@@ -1,6 +1,8 @@
 #ifndef GAMEOBJECT_HPP
 #define GAMEOBJECT_HPP
 
+// GameObject class declaration
+
 class GameObject {
 public:
     GameObject(int posX, int posY, int width, int height, bool horizontalOrientation);

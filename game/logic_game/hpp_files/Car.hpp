@@ -3,6 +3,8 @@
 #include "GameObject.hpp"
 #include <string>
 
+// Car class declaration, child of GameObject
+
 class Car : public GameObject {
 public:
     Car(int posX, int posY, int width, int height, bool horizontalOrientation, int maxRow, int maxCol, bool isPlayer = false, const std::string& name = "")

@@ -4,6 +4,8 @@
 #include "Car.hpp"
 #include <vector>
 
+// StockCar class declaration
+
 class StockCar {
 public:
     void addCar(const Car& car);

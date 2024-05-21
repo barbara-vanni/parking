@@ -9,6 +9,11 @@
 #include <vector>
 #include <vld.h>
 
+
+//main function to run the game
+//initializes the graphics, creates a window, and runs the main game loop
+
+
 int main(int argc, char *argv[]) {
     if (!initGraphic()) {
         std::cout << "Failed to initialize graphics. Exiting." << std::endl;
@@ -59,8 +64,6 @@ int main(int argc, char *argv[]) {
         std::cout << "No Memory Leaks" << std::endl;
     else
         std::cout << "Memory Leaks" << std::endl;
-
-
 
     std::cout << "la fenetre est fermée" << std::endl;
     grid.~Grid();

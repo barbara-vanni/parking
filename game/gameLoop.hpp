@@ -7,6 +7,8 @@
 #include "logic_game/hpp_files/StockCar.hpp"
 #include "Grid.hpp"
 
+// declare the main game loop function
+
 void mainLoop(Window& window, Grid& grid, std::vector<Button*>& buttons, StockCar& stockCar, int& selectedCarIndex);
 void introPage(Window& window, std::vector<Button*>& buttons, std::vector<SDL_Texture*>& gifFrames, int currentFrame);
 void menuPage(Window& window, std::vector<Button*>& buttons);

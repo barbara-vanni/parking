@@ -6,8 +6,13 @@
 #include "logic_game/hpp_files/StockCar.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-using namespace std;
 
+// Grid class declaration
+// This class is responsible for creating the grid, setting the car, displaying the grid on the screen, and rendering the cars
+
+
+using namespace std;
+// directions constants
 const int NORTH = 0;
 const int WEST = 1;
 const int SOUTH = 2;

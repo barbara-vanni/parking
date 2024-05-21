@@ -3,6 +3,10 @@
 #include "../../Grid.hpp"
 #include "../hpp_files/Car.hpp"
 
+
+// Car class implementation 
+// Movement methods for the car, reset position, and check if the car is within the grid limits
+
 Car::~Car() {}
 
 void Car::move(int distance) {

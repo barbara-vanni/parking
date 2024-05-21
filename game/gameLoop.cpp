@@ -7,6 +7,9 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
+// Main game loop for running the game, handling events and rendering
+
+
 void mainLoop(Window& window, Grid& grid, std::vector<Button*>& buttons, StockCar& stockCar, int& selectedCarIndex) {
     std::cout << "Game loop started!" << std::endl;
 

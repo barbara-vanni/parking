@@ -1,6 +1,8 @@
 #include "../hpp_files/GameObject.hpp"
 #include <iostream>
 
+// GameObject class implementation
+
 GameObject::GameObject(int posX, int posY, int width, int height, bool horizontalOrientation) 
     : posX(posX), posY(posY), width(width), height(height), horizontalOrientation(horizontalOrientation) {}
 

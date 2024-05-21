@@ -1,6 +1,9 @@
 #include <iostream>
 #include "../hpp_files/StockCar.hpp"
 
+// StockCar class implementation
+// Methods to add a car to the stock, move a car, and reset all cars
+
 void StockCar::addCar(const Car& car) {
     cars.push_back(car);
 }
